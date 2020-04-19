@@ -31,3 +31,8 @@ Flow for client
 1. Create a package for each provicer
 2. Create a OpenFeign client for each type(VM, Network, keys) in that package
 3. Create Transformers to transfrom from and to Thaalam Object (request, response, list response)
+
+
+Serach, Drag and Drop from existing templates and resources. 
+Modify only specific configurations to adjust to the need and then, let Chords do the Magic.  
+The resources are ready, just with a few interactions.  

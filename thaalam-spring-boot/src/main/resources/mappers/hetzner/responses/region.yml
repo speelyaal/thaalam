@@ -1,0 +1,14 @@
+
+type: Region
+arrayPath: $.locations[*]
+mapping:
+  properties:
+    - property: verndorReference
+      path: name
+    - property: description
+      path: description
+    - property: countryCode
+      path: country
+    - property: city
+      path: city
+

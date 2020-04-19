@@ -9,7 +9,7 @@ data class Region(var id: String) {
     var countryCode: String =""
     var city: String =""
     var additionalProperties: HashMap<String, String>  = HashMap()
-    
+
 
 
 
