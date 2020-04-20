@@ -22,6 +22,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation(group="com.fasterxml.jackson.dataformat", name="jackson-dataformat-yaml", version= "2.11.0.rc1")
+	implementation(group="com.fasterxml.jackson.core", name="jackson-databind", version="2.11.0.rc1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}

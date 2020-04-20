@@ -1,22 +1,19 @@
 package com.speelyaal.thaalam.controllers.common
 
-import com.speelyaal.thaalam.datamodel.CloudProviderList
+import com.speelyaal.thaalam.controllers.ThaalamResourceController
 import com.speelyaal.thaalam.datamodel.Region
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestHeader
+import com.speelyaal.thaalam.transformers.data.RequestTransformer
+import com.speelyaal.thaalam.transformers.data.ResponseTransformer
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("regions")
-class RegionController {
+@RequestMapping("regions2")
+class RegionController(requestTransformer: RequestTransformer,
+                       responseTransformer: ResponseTransformer):
+                       ThaalamResourceController(requestTransformer,
+                                                            responseTransformer) {
 
-    @GetMapping()
-    fun getAllRegions(@RequestHeader("X-Request-ID") requestId: String,
-                      @RequestHeader("X-Cloud-Provider") cloudProvider: CloudProviderList ,
-                      @RequestHeader(value = "X-API-Token", required = false) apiToken: String="" ): ArrayList<Region> {
 
-        return ArrayList<Region>()
 
-    }
 }

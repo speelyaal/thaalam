@@ -1,11 +1,12 @@
 package com.speelyaal.thaalam.datamodel
 
 enum class CloudProviderList {
-    Hetzner,
-    DigitalOcean,
-    Linode,
-    Upcloud,
-    AWS,
-    Azure,
-    Private
+    hetzner,
+    digitalOcean,
+    linode,
+    upcloud,
+    aws,
+    azure,
+    googleCloud,
+    private
 }

@@ -1,0 +1,13 @@
+server:
+  port: 9002
+
+thaalam:
+  version: 1.0.23
+  providers:
+    - hetzner
+    - digitalOcean
+    - upCloud
+    - linode
+    - aws
+    - azure
+    - googleCloud

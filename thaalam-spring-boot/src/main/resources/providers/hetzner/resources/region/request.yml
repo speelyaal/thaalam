@@ -1,4 +1,5 @@
 type: Region
+apiPath: /asdfas/asdfasdf/asdfasdf/asdfasdf/
 authorization:
   type: BearerToken
 
