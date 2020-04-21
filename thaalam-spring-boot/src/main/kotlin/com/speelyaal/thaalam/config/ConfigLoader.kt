@@ -16,6 +16,8 @@ class ConfigLoader {
     @Autowired
     lateinit var thaalamProperties: ThaalamProperties
 
+    private val objectMapper = ObjectMapper(YAMLFactory())
+
     var providerConfigurations:
             HashMap<String, ProviderConfigurations> = HashMap()
 
@@ -30,9 +32,9 @@ class ConfigLoader {
         thaalamProperties.providers.forEach {
             try {
                 var providerConfig = ResourceUtils.getFile("classpath:providers/$it/config.yml");
-                val mapper = ObjectMapper(YAMLFactory())
+
                 var tmpProviderConfiguration: ProviderConfigurations =
-                        mapper.readValue(providerConfig, ProviderConfigurations::class.java)
+                        objectMapper.readValue(providerConfig, ProviderConfigurations::class.java)
 
                 this.providerConfigurations[it] = tmpProviderConfiguration
 
@@ -45,18 +47,37 @@ class ConfigLoader {
 
         this.loadRequestMappers();
 
+        this.loadResponseMappers();
+
 
     }
 
-    fun loadRequestMappers(){
+    private fun loadResponseMappers() {
         this.providerConfigurations.forEach{
-
             it.value.resources.forEach {
                 println("Resource    $it" )
             }
+        }
+    }
 
+    private fun loadRequestMappers(){
+        this.providerConfigurations.forEach{ providerConfig ->
+            var providerName = providerConfig.key;
+            var tempResourceMap : HashMap<String, RequestMapper> = HashMap()
 
+            providerConfig.value.resources.forEach { resrouce ->
+                try {
 
+                    var requestConfigFile = ResourceUtils.getFile("classpath:providers/$providerName/resources/$resrouce/request.yml");
+                    var tmpRequestMapper: RequestMapper =
+                            objectMapper.readValue(requestConfigFile, RequestMapper::class.java)
+
+                    tempResourceMap[resrouce] = tmpRequestMapper;
+                } catch (exception: FileNotFoundException){
+                    println("Request mapper file not found")
+                }
+            }
+            this.requestObjectMappers[providerName]=tempResourceMap;
         }
     }
 

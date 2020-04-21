@@ -7,6 +7,7 @@ import com.speelyaal.thaalam.config.ProviderConfigurations
 
 import com.speelyaal.thaalam.config.ThaalamProperties
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.util.ResourceUtils
 import java.io.FileNotFoundException
@@ -23,6 +24,7 @@ class RequestTransformer {
 
 
     fun test(){
+
 
         this.config.providerConfigurations.forEach{
 

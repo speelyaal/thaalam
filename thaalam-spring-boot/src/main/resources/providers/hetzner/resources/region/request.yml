@@ -1,6 +1,6 @@
 type: Region
-apiPath: /asdfas/asdfasdf/asdfasdf/asdfasdf/
-authorization:
-  type: BearerToken
-
+methods:
+  GET:
+    properties:
+      path: /locations
 
