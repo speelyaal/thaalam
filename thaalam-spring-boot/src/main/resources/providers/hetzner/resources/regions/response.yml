@@ -10,7 +10,7 @@ mapping:
 
      id: $.name
      name: $.name
-     verndorReference: $.name
+     vendorReference: $.name
      description: $.description
      countryCode: $.country
      city: $.city

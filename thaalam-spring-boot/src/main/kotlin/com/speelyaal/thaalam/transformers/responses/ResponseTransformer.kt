@@ -41,6 +41,7 @@ class ResponseTransformer {
 
             mapping.forEach { property ->
 
+
                 var tempVal: String = JsonPath.parse(jsonObject).read(property.value);
                 //println("Class is  " + tmpObject!!::class.java)
                 tmpObject?.printClassName();

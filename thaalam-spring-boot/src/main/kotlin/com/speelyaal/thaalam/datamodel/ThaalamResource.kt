@@ -5,6 +5,9 @@ import kotlin.reflect.full.memberProperties
 
 open class ThaalamResource {
 
+
+
+
     fun setProperty(fieldName: String, value: Any) {
 
         println("Field Name : $fieldName   Value: $value" )
