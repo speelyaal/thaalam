@@ -1,14 +1,7 @@
-
-type: Region
-arrayPath: $.locations[*]
+thaalamType: Region
+listPath: $.locations[*]
 mapping:
-  properties:
-    - property: verndorReference
-      path: name
-    - property: description
-      path: description
-    - property: countryCode
-      path: country
-    - property: city
-      path: city
-
+  verndorReference: name
+  description: description
+  countryCode: country
+  city: city

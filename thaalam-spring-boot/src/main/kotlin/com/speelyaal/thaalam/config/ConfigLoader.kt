@@ -1,10 +1,11 @@
 package com.speelyaal.thaalam.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.speelyaal.thaalam.datamodel.CloudProviderList
-import com.speelyaal.thaalam.transformers.data.RequestMapper
-import com.speelyaal.thaalam.transformers.data.ResponseMapper
+import com.speelyaal.thaalam.transformers.requests.RequestMapper
+import com.speelyaal.thaalam.transformers.responses.ResponseMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.util.ResourceUtils
@@ -55,10 +56,27 @@ class ConfigLoader {
     }
 
     private fun loadResponseMappers() {
-        this.providerConfigurations.forEach{
-            it.value.resources.forEach {
-                println("Resource    $it" )
+        this.providerConfigurations.forEach{ providerConfig ->
+            var providerName = providerConfig.key;
+            var tempResourceMap : HashMap<String, ResponseMapper> = HashMap()
+
+            providerConfig.value.resources.forEach { resrouce ->
+                try {
+
+                    println("Provider config path is   providers/$providerName/resources/$resrouce/response.yml" )
+                    var responseConfigFile = ResourceUtils.getFile("classpath:providers/$providerName/resources/$resrouce/response.yml");
+                    var tmpResponseMapper: ResponseMapper =
+                            objectMapper.readValue(responseConfigFile, ResponseMapper::class.java)
+
+                    tempResourceMap[resrouce] = tmpResponseMapper;
+                } catch (exception: FileNotFoundException){
+                    println("Request mapper file not found")
+                }catch (excption: UnrecognizedPropertyException){
+                    println("Problem with Yaml file(providers/$providerName/resources/$resrouce/response.yml)")
+                    println(excption.stackTrace)
+                }
             }
+            this.responseObjectMappers[providerName]=tempResourceMap;
         }
     }
 
@@ -72,12 +90,17 @@ class ConfigLoader {
 
                     println("Provider config path is   providers/$providerName/resources/$resrouce/request.yml" )
                     var requestConfigFile = ResourceUtils.getFile("classpath:providers/$providerName/resources/$resrouce/request.yml");
+
                     var tmpRequestMapper: RequestMapper =
                             objectMapper.readValue(requestConfigFile, RequestMapper::class.java)
 
                     tempResourceMap[resrouce] = tmpRequestMapper;
+
                 } catch (exception: FileNotFoundException){
                     println("Request mapper file not found")
+                } catch (excption: UnrecognizedPropertyException){
+                    println("Problem with Yaml file(providers/$providerName/resources/$resrouce/request.yml)")
+                   println(excption.stackTrace)
                 }
             }
             this.requestObjectMappers[providerName]=tempResourceMap;

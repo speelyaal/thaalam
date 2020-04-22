@@ -22,8 +22,17 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+
+	//JSON Helpers
+	//Jackson (for serializations)
 	implementation(group="com.fasterxml.jackson.dataformat", name="jackson-dataformat-yaml", version= "2.11.0.rc1")
 	implementation(group="com.fasterxml.jackson.core", name="jackson-databind", version="2.11.0.rc1")
+	//Jayway JsonPath (to construct Thaalam fieds/prpoerties from Json Responses)
+	implementation(group="com.jayway.jsonpath", name="json-path", version = "2.4.0")
+
+
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}

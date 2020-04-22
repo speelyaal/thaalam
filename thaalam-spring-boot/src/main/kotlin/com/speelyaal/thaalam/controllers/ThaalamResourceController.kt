@@ -1,12 +1,7 @@
 package com.speelyaal.thaalam.controllers
 
 import com.speelyaal.thaalam.datamodel.CloudProviderList
-import com.speelyaal.thaalam.datamodel.Region
-import com.speelyaal.thaalam.transformers.data.RequestMapper
-import com.speelyaal.thaalam.transformers.data.RequestTransformer
-import com.speelyaal.thaalam.transformers.data.ResponseTransformer
 import com.speelyaal.thaalam.transformers.utils.RestHelper
-import org.springframework.http.HttpMethod
 import org.springframework.web.bind.annotation.*
 
 @RestController

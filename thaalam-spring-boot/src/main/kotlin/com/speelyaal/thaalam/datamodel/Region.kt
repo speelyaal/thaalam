@@ -2,9 +2,11 @@ package com.speelyaal.thaalam.datamodel
 
 
 
-data class Region(var id: String) {
+class Region : ThaalamResource() {
 
-     var vendorReference: String = ""
+    var id: String = ""
+    var name: String = ""
+    var vendorReference: String = ""
     var description: String = ""
     var countryCode: String =""
     var city: String =""

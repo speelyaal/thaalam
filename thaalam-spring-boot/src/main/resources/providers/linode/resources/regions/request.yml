@@ -1,4 +1,4 @@
-type: Region
+thaalamType: Region
 getAll:
   method: GET
   path: /regions

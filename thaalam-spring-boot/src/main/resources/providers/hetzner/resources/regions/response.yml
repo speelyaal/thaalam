@@ -1,14 +1,17 @@
 
-type: Region
-arrayPath: $.locations[*]
+thaalamType: Region
+
+#When we receive regions/locations as a list/array response where it is located in the response
+listPath: $.locations[*]
+
 mapping:
-  properties:
-    - property: verndorReference
-      path: name
-    - property: description
-      path: description
-    - property: countryCode
-      path: country
-    - property: city
-      path: city
+     #Property mapping with Region(class) and jsonPath within the region/location object of Hetzner
+     #This Json Path is "within" the each individual resource object. Do not give Json Path from the root of the response.
+
+     id: $.name
+     name: $.name
+     verndorReference: $.name
+     description: $.description
+     countryCode: $.country
+     city: $.city
 
