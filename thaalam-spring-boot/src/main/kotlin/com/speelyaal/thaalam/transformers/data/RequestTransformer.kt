@@ -23,20 +23,5 @@ class RequestTransformer {
 
 
 
-    fun test(){
-
-
-        this.config.providerConfigurations.forEach{
-
-            it.value.resources.forEach {
-                println("Resource    $it" )
-            }
-
-
-
-        }
-
-    }
-
 }
 

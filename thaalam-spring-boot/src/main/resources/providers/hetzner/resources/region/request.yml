@@ -1,6 +1,0 @@
-type: Region
-methods:
-  GET:
-    properties:
-      path: /locations
-

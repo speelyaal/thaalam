@@ -4,7 +4,7 @@ enum class CloudProviderList {
     hetzner,
     digitalOcean,
     linode,
-    upcloud,
+    upCloud,
     aws,
     azure,
     googleCloud,

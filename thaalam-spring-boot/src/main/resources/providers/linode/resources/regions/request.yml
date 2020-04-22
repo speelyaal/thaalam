@@ -1,0 +1,10 @@
+type: Region
+getAll:
+  method: GET
+  path: /regions
+getByReference:
+  method: GET
+  path: /regions/{reference}
+
+
+
