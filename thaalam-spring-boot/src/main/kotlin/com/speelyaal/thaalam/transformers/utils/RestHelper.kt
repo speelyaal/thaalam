@@ -2,7 +2,8 @@ package com.speelyaal.thaalam.transformers.utils
 
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.config.ProviderConfigurations
-import com.speelyaal.thaalam.datamodel.*
+import com.speelyaal.thaalam.datamodel.CloudProviderName
+import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
 import com.speelyaal.thaalam.transformers.requests.RequestTransformer
 import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
@@ -39,7 +40,7 @@ class RestHelper {
 
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
 
-        val entity = this.getHeadersEntity(cloudProvider, apiCredentials)
+        val entity = this.getHttpEntity(cloudProvider, apiCredentials)
 
         var result = restTemplate.exchange(apiUrl + requestMapper?.getAll?.path, HttpMethod.GET, entity, String::class.java)
 
@@ -55,9 +56,9 @@ class RestHelper {
         var requestMapper = this.getRequestMapper(cloudProvider, resourceName)
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
 
-        val entity = this.getHeadersEntity(cloudProvider, apiCredentials)
-        val method =  requestMapper.getByReference
-        val url= apiUrl + method.path.replace("{reference}", vendorReference)
+        val entity = this.getHttpEntity(cloudProvider, apiCredentials)
+        val method = requestMapper.getByReference
+        val url = apiUrl + method.path.replace("{reference}", vendorReference)
 
         var result = restTemplate.exchange(url, method.method, entity, Any::class.java)
 
@@ -72,17 +73,34 @@ class RestHelper {
         return this.config.requestObjectMappers[cloudProvider]?.get(resourceName)!!
     }
 
-    fun <T> createResource(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, resourceToCreate: T): Any {
+    fun <T> createResource(cloudProvider: CloudProviderName,
+                           resourceName: ResourceName,
+                           apiCredentials: String,
+                           resourceToCreate: T): Any {
 
         var requestMapper = this.getRequestMapper(cloudProvider, resourceName)
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
 
-        val entity = this.getHeadersEntity(cloudProvider, apiCredentials)
-        val method =  requestMapper.getByReference
-        val url= apiUrl + method.path
 
-        var resourceToPost = this.requestTransformer.transformResourceToPost(cloudProvider, resourceName,resourceToCreate )
-        var result = restTemplate.exchange(url, method.method, entity, Any::class.java)
+        val method = requestMapper.create
+        val url = apiUrl + method.path
+
+        var resourceToPost =
+                this.requestTransformer.transformResourceToPost(
+                        cloudProvider,
+                        resourceName,
+                        resourceToCreate,
+                        method.body)
+
+
+        val entity = this.getHttpEntity(cloudProvider, apiCredentials, resourceToPost)
+
+
+        var result = restTemplate.exchange(
+                url,
+                method.method,
+                entity,
+                Any::class.java)
 
 
 
@@ -101,8 +119,7 @@ class RestHelper {
 
     }
 
-    private fun getHeadersEntity(cloudProvider: CloudProviderName, apiCredentials: String): HttpEntity<String> {
-
+    private  fun getHttpEntity(cloudProvider: CloudProviderName, apiCredentials: String): HttpEntity<String> {
         val headers = HttpHeaders()
 
         val authType: String = when (this.config.providerConfigurations[cloudProvider]?.authorizationType) {
@@ -110,12 +127,24 @@ class RestHelper {
             ProviderConfigurations.AuthorizationType.basicAuth -> "Basic"
             else -> ""
         }
-
         headers.set("Authorization", "$authType $apiCredentials")
-
-        val entity = HttpEntity<String>(headers)
-        return entity
-
+        return  HttpEntity<String>(headers)
     }
+
+
+    //TODO: Cleanup duplicate code
+    private  fun getHttpEntity(cloudProvider: CloudProviderName, apiCredentials: String, body: Any): HttpEntity<Any> {
+        val headers = HttpHeaders()
+
+        val authType: String = when (this.config.providerConfigurations[cloudProvider]?.authorizationType) {
+            ProviderConfigurations.AuthorizationType.bearerToken -> "Bearer"
+            ProviderConfigurations.AuthorizationType.basicAuth -> "Basic"
+            else -> ""
+        }
+        headers.set("Authorization", "$authType $apiCredentials")
+        return  HttpEntity<Any>(body,headers)
+    }
+
+
 
 }

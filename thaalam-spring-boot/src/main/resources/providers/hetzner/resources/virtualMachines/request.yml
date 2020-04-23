@@ -13,7 +13,7 @@ create:
     server_type: vmTypeIdentifier
     location: vmRegionIdentifier
     image: osImageIdentifier
-    ssh_keys: sshKeys:vendorReference
+    #ssh_keys: sshKeys:vendorReference
 
 update:
   method: PUT

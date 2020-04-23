@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.speelyaal.thaalam.datamodel.CloudProviderName
 import com.speelyaal.thaalam.datamodel.ResourceName
+import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
 import com.speelyaal.thaalam.transformers.utils.RestHelper
 import org.springframework.web.bind.annotation.*
 
@@ -43,13 +44,10 @@ class ThaalamResourceController(var restHelper: RestHelper){
                        @RequestHeader(value = "X-API-Credentials", required = false) apiCredentials: String="",
                        @RequestBody resourceToCreate: Any ): Any{
 
-        //TODO: Cast to appropriate type: example to Virtual Machine
-       var jsonString = this.jsonObjectMapper.writeValueAsString(resourceToCreate)
-        //TODO: get type from
 
-        return restHelper.createResource(cloudProvider,resourceName,apiCredentials,resourceToCreate)
+
+        return restHelper.createResource(cloudProvider,resourceName,apiCredentials, this.castToResourceType(resourceToCreate))
     }
-
 
     @PutMapping("{resource}/{reference}")
     fun updateResource(@PathVariable("resource") resourceName: ResourceName,
@@ -61,6 +59,7 @@ class ThaalamResourceController(var restHelper: RestHelper){
         return restHelper.updateResource(cloudProvider,resourceName, apiCredentials, resourceToUpdate)
     }
 
+
     @DeleteMapping("{resource}/{reference}")
     fun deleteResource(@PathVariable("resource") resourceName: ResourceName,
                        @PathVariable("reference") vendorReference: String,
@@ -70,5 +69,15 @@ class ThaalamResourceController(var restHelper: RestHelper){
                        @RequestBody(required = false) resourceToDelete: Any ){
         return restHelper.deleteResource(cloudProvider,resourceName, apiCredentials, resourceToDelete)
     }
+    private fun castToResourceType(resourceToCreate: Any): Any {
+
+        //TODO: Cast to appropriate type: example to Virtual Machine
+        var jsonString = this.jsonObjectMapper.writeValueAsString(resourceToCreate)
+        //TODO: get type from
+
+        return this.jsonObjectMapper.readValue(jsonString, VirtualMachine::class.java )
+
+    }
 
 }
+

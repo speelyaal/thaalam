@@ -17,6 +17,9 @@ class VirtualMachine : ThaalamResource()  {
     var ipv6: List<String> = ArrayList<String>()
     var status: VirtualMachineStatus = VirtualMachineStatus.offline
     var specification: VirtualMachineSpecification = VirtualMachineSpecification()
+    //TODO Random password
+    // Linode : Password must contain at least 2 of these 4 character classes: lowercase letters, uppercase letters, numbers, and punctuation
+    var rootPassword: String= "asA23@_dfasdfasdfasdfasdasdf"
 
     //TODO: Add backup related fileds
     //var backup

@@ -69,4 +69,30 @@ abstract class ThaalamResource  {
     }
 
 
+    fun getPropertyValue(fieldName: String): Any? {
+
+
+        val kClass = Class.forName(this::class.java.name).kotlin
+        val instance = this;
+
+        val member = kClass.memberProperties.filterIsInstance<KMutableProperty<*>>()
+                .firstOrNull { it.name == fieldName }
+
+
+
+
+
+        try {
+           return member?.getter?.call(instance)
+        } catch (exception: IllegalArgumentException) {
+            LOG.error(" Exception getting value for  $fieldName ")
+            LOG.error(exception.message)
+        }
+
+        return null
+    }
+
+
+
+
 }

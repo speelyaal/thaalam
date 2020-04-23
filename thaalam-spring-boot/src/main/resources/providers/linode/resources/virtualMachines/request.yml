@@ -8,6 +8,13 @@ getByReference:
 create:
   method: POST
   path: /linode/instances
+  body:
+    label: name
+    type: vmTypeIdentifier
+    region: vmRegionIdentifier
+    image: osImageIdentifier
+    root_pass: rootPassword
+    #ssh_keys: sshKeys:vendorReference
 update:
   method: PUT
   path: /linode/instances/{reference}

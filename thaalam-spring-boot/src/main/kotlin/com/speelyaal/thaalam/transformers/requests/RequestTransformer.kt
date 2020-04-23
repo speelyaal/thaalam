@@ -5,7 +5,6 @@ import com.speelyaal.thaalam.datamodel.CloudProviderName
 
 import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.datamodel.ThaalamResource
-import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,17 +20,26 @@ class RequestTransformer {
     lateinit var config:  ConfigLoader
 
     fun <T> transformResourceToPost(cloudProvider: CloudProviderName,
-                                resourceName: ResourceName,
-                                resourceToCreate: T): Any {
+                                    resourceName: ResourceName,
+                                    resourceToCreate: T,
+                                    mapping: HashMap<String, String>): Map<String, Any?> {
+        if(resourceToCreate != null) {
+            LOG.debug("Thaalam resource Type is  ${resourceToCreate}")
+        }
 
-        val temp: VirtualMachine = resourceToCreate as VirtualMachine
+        var resultMap = HashMap<String, Any?>()
+        var resourceObject = resourceToCreate as ThaalamResource
+        mapping.forEach {property ->
 
-        LOG.debug("Thaalam resource Type is  " + resourceToCreate!!::class.java)
-        LOG.debug("Converted Type is  " + temp::class.java)
-        LOG.debug("After conversion reading a field --> " + temp.osImageIdentifier)
+            var tempVal: Any? = resourceObject.getPropertyValue(property.value)
 
 
-        return Any()
+            resultMap[property.key] = tempVal
+
+        }
+
+
+        return resultMap
     }
 
 
