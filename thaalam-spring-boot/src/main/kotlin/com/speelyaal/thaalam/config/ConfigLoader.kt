@@ -42,7 +42,7 @@ class ConfigLoader {
 
     @PostConstruct
     fun loadConfigurations() {
-        thaalamProperties.providers.forEach { it
+        thaalamProperties.providers.forEach {
             var cloudProvider: CloudProviderName = CloudProviderName.valueOf(it)
 
             try {

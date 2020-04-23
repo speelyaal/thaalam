@@ -5,6 +5,24 @@ getAll:
 getByReference:
   method: GET
   path: /servers/{reference}
+create:
+  method: POST
+  path: /servers
+  body:
+    name: name
+    server_type: vmTypeIdentifier
+    location: vmRegionIdentifier
+    image: osImageIdentifier
+    ssh_keys: sshKeys:vendorReference
+
+update:
+  method: PUT
+  path: /servers/{reference}
+delete:
+  method: DELETE
+  path: /servers/{reference}
+
+
 
 
 

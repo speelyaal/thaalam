@@ -1,9 +1,8 @@
 package com.speelyaal.thaalam.transformers.utils
 
 import com.speelyaal.thaalam.config.ConfigLoader
-import com.speelyaal.thaalam.datamodel.CloudProviderName
-import com.speelyaal.thaalam.datamodel.Region
-import com.speelyaal.thaalam.datamodel.ResourceName
+import com.speelyaal.thaalam.config.ProviderConfigurations
+import com.speelyaal.thaalam.datamodel.*
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
 import com.speelyaal.thaalam.transformers.requests.RequestTransformer
 import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
@@ -31,59 +30,92 @@ class RestHelper {
     private var restTemplate = RestTemplate()
 
 
-    fun getResources(cloudProvider: CloudProviderName, resource: ResourceName, apiToken: String): Any {
+    fun getResources(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String): Any {
 
 
         //TODO: Error handling when Request Mapper is not found
-        var requestMapper: RequestMapper? = this.config.requestObjectMappers[cloudProvider]?.get(resource)
+        var requestMapper: RequestMapper? = this.config.requestObjectMappers[cloudProvider]?.get(resourceName)
 
 
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
 
+        val entity = this.getHeadersEntity(cloudProvider, apiCredentials)
 
-        //Set the headers you need send
-        //Set the headers you need send
-        val headers = HttpHeaders()
-        headers.set("Authorization", "Bearer " + apiToken)
-
-        //Create a new HttpEntity
-        val entity = HttpEntity<String>(headers)
         var result = restTemplate.exchange(apiUrl + requestMapper?.getAll?.path, HttpMethod.GET, entity, String::class.java)
 
         //TODO:
 
 
-
-       return this.responseTransformer.transformListResponse(cloudProvider, resource, result )
+        return this.responseTransformer.transformListResponse(cloudProvider, resourceName, result)
     }
 
-    fun getResourceByReference(cloudProvider: CloudProviderName, resource: ResourceName, apiToken: String, vendorReference: String): Any {
+    fun getResourceByReference(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, vendorReference: String): Any {
 
 
-
-        //TODO: Error handling when Request Mapper is not found
-        var requestMapper: RequestMapper? = this.config.requestObjectMappers[cloudProvider]?.get(resource)
-
-
+        var requestMapper = this.getRequestMapper(cloudProvider, resourceName)
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
 
+        val entity = this.getHeadersEntity(cloudProvider, apiCredentials)
+        val method =  requestMapper.getByReference
+        val url= apiUrl + method.path.replace("{reference}", vendorReference)
+
+        var result = restTemplate.exchange(url, method.method, entity, Any::class.java)
 
 
-        //Set the headers you need send
+
+        return this.responseTransformer.transformSingleResourceResponse(cloudProvider, resourceName, result)
+    }
+
+    private fun getRequestMapper(cloudProvider: CloudProviderName, resourceName: ResourceName): RequestMapper {
+
+        //TODO: Error handling when Request Mapper is not found
+        return this.config.requestObjectMappers[cloudProvider]?.get(resourceName)!!
+    }
+
+    fun <T> createResource(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, resourceToCreate: T): Any {
+
+        var requestMapper = this.getRequestMapper(cloudProvider, resourceName)
+        var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
+
+        val entity = this.getHeadersEntity(cloudProvider, apiCredentials)
+        val method =  requestMapper.getByReference
+        val url= apiUrl + method.path
+
+        var resourceToPost = this.requestTransformer.transformResourceToPost(cloudProvider, resourceName,resourceToCreate )
+        var result = restTemplate.exchange(url, method.method, entity, Any::class.java)
+
+
+
+        return result as Any
+
+    }
+
+    fun updateResource(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, resourceToUpdate: Any) {
+
+    }
+
+    fun deleteResource(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, resourceToDelete: Any) {
+
+        //TODO: This(Delete) has to be handle differently for cloud providers
+        //For example: Hetzner always sends 200 with action object inside with status whereas Linode sends 200 for succss and default to error
+
+    }
+
+    private fun getHeadersEntity(cloudProvider: CloudProviderName, apiCredentials: String): HttpEntity<String> {
+
         val headers = HttpHeaders()
-        headers.set("Authorization", "Bearer " + apiToken)
 
-        //Create a new HttpEntity
+        val authType: String = when (this.config.providerConfigurations[cloudProvider]?.authorizationType) {
+            ProviderConfigurations.AuthorizationType.bearerToken -> "Bearer"
+            ProviderConfigurations.AuthorizationType.basicAuth -> "Basic"
+            else -> ""
+        }
+
+        headers.set("Authorization", "$authType $apiCredentials")
+
         val entity = HttpEntity<String>(headers)
-        val path = requestMapper?.getByReference?.path.toString().replace("{reference}", vendorReference)
-        val method =  requestMapper?.getByReference?.method as HttpMethod
+        return entity
 
-        var result = restTemplate.exchange(apiUrl + path, method , entity, Any::class.java)
-
-        //TODO:
-
-
-        return Region();
     }
 
 }

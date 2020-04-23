@@ -20,13 +20,14 @@ class ResponseTransformer {
 
     private val LOG: Logger = LogManager.getLogger(ResponseTransformer::class.java)
 
+    private val jsonObjectMapper: ObjectMapper = ObjectMapper();
+
     @Autowired
     lateinit var config: ConfigLoader
 
     fun transformListResponse(cloudProvider: CloudProviderName, resource: ResourceName, result: ResponseEntity<String>): Any {
 
         var responseMapper = this.getResponseMapper(cloudProvider, resource)
-
         var mapping = responseMapper.mapping
 
         //TODO: Actual stuff goes here, create  new Response Type, map properties and put them in list
@@ -37,8 +38,8 @@ class ResponseTransformer {
         var responseList = ArrayList<Any>()
         listResult.forEach { region ->
 
-            var om: ObjectMapper = ObjectMapper();
-            var jsonObject = om.writeValueAsString(region);
+
+            var jsonObject = this.jsonObjectMapper.writeValueAsString(region);
 
 
             var tmpObject= ResourceTypeFactory.getInstance(responseMapper.thaalamType);
@@ -69,6 +70,39 @@ class ResponseTransformer {
 
     }
 
+    fun transformSingleResourceResponse(cloudProvider: CloudProviderName, resource: ResourceName, result: ResponseEntity<Any>): Any {
+        var responseMapper = this.getResponseMapper(cloudProvider, resource)
+
+        var mapping = responseMapper.mapping
+
+        //TODO: Actual stuff goes here, create  new Response Type, map properties and put them in list
+
+        var singleResult = this.jsonObjectMapper.writeValueAsString(result.body)
+        var jsonObject: Any = JsonPath.parse(singleResult).read(responseMapper.singleInstancePath)
+
+        var tmpResultObject = ResourceTypeFactory.getInstance(responseMapper.thaalamType);
+
+            mapping.forEach { property ->
+
+
+                lateinit var tempVal: Any;
+                try {
+                    tempVal = JsonPath.parse(jsonObject).read(property.value);
+                    tmpResultObject?.setProperty(property.key, tempVal)
+                }catch (exception: ClassCastException){
+                    LOG.error("Casting error for ${property.key}    - > ${property.value}")
+                    LOG.error(exception.message)
+                }
+
+            }
+
+
+
+
+
+        return tmpResultObject as Any
+    }
+
     private fun getResponseMapper(cloudProvider: CloudProviderName, resource: ResourceName): ResponseMapper {
 
         this.config.responseObjectMappers[cloudProvider].let {
@@ -84,15 +118,15 @@ class ResponseTransformer {
     }
 
 
-  /*  @Suppress("UNCHECKED_CAST")
-    fun <R> getProperty(instance: Any, propertyName: String): R {
-        val property = instance::class.memberProperties
-                // don't cast here to <Any, R>, it would succeed silently
-                .first { it.name == propertyName } as KProperty1<Any, *>
+    /*  @Suppress("UNCHECKED_CAST")
+      fun <R> getProperty(instance: Any, propertyName: String): R {
+          val property = instance::class.memberProperties
+                  // don't cast here to <Any, R>, it would succeed silently
+                  .first { it.name == propertyName } as KProperty1<Any, *>
 
-        // force a invalid cast exception if incorrect type here
-        return property.get(instance) as R
-    }*/
+          // force a invalid cast exception if incorrect type here
+          return property.get(instance) as R
+      }*/
 
 
 }

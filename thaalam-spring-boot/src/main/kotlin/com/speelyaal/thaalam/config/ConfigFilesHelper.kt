@@ -8,7 +8,7 @@ class ConfigFilesHelper {
 
 }
 
-fun main(args:Array<String>) {
+fun main2(args:Array<String>) {
     var PROVIDERS_ROOT_PATH = args[0]
     var file = File("$PROVIDERS_ROOT_PATH/hetzner/config2.yml")
 

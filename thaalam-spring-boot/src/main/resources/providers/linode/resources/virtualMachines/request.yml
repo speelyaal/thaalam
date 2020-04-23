@@ -1,0 +1,22 @@
+thaalamType: VirtualMachine
+getAll:
+  method: GET
+  path: /linode/instances
+getByReference:
+  method: GET
+  path: /linode/instances/{reference}
+create:
+  method: POST
+  path: /linode/instances
+update:
+  method: PUT
+  path: /linode/instances/{reference}
+delete:
+  method: DELETE
+  path: /linode/instances/{reference}
+
+
+
+
+
+

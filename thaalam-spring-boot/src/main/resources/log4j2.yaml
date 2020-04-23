@@ -9,7 +9,7 @@ Configutation:
       name: Console_Appender
       target: SYSTEM_OUT
       PatternLayout:
-        pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+        pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS}  [%t] %c{1} - %msg%n"
     File:
       name: File_Appender
       fileName: ${log-path}/logfile.log
@@ -33,9 +33,9 @@ Configutation:
         - ref: Console_Appender
     Logger:
       - name: com.speelyaal.thaalam
-        level: info
+        level: debug
         AppenderRef:
           - ref: File_Appender
-            level: error
+            level: info
           - ref: RollingFile_Appender
-            level: debug
+            level: info
