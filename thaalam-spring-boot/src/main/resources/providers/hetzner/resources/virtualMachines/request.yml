@@ -1,0 +1,11 @@
+thaalamType: VirtualMachine
+getAll:
+  method: GET
+  path: /servers
+getByReference:
+  method: GET
+  path: /servers/{reference}
+
+
+
+

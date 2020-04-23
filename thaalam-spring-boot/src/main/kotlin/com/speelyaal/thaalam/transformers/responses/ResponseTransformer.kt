@@ -8,6 +8,8 @@ import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.transformers.exceptions.ResponseMapperNotFoundException
 import com.speelyaal.thaalam.transformers.utils.ResourceTypeFactory
 import net.minidev.json.JSONArray
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class ResponseTransformer {
+
+    private val LOG: Logger = LogManager.getLogger(ResponseTransformer::class.java)
 
     @Autowired
     lateinit var config: ConfigLoader
@@ -42,15 +46,19 @@ class ResponseTransformer {
             mapping.forEach { property ->
 
 
-                var tempVal: String = JsonPath.parse(jsonObject).read(property.value);
-
-
-                tmpObject?.setProperty(property.key, tempVal)
-
-                if (tmpObject != null) {
-                    responseList.add(tmpObject)
+               lateinit var tempVal: Any;
+                try {
+                     tempVal = JsonPath.parse(jsonObject).read(property.value);
+                    tmpObject?.setProperty(property.key, tempVal)
+                }catch (exception: ClassCastException){
+                    LOG.error("Casting error for ${property.key}    - > ${property.value}")
+                    LOG.error(exception.message)
                 }
 
+            }
+
+            if (tmpObject != null) {
+                responseList.add(tmpObject)
             }
 
 

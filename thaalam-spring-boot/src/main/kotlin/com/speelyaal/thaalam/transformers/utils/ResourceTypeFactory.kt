@@ -3,6 +3,7 @@ package com.speelyaal.thaalam.transformers.utils
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.datamodel.Region
 import com.speelyaal.thaalam.datamodel.ThaalamResource
+import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -23,7 +24,9 @@ class ResourceTypeFactory {
 
             when (resource) {
                 ResourceTypes.Region -> return Region()
-                else -> {                    LOG.error("Resource not found  $resource")
+                ResourceTypes.VirtualMachine -> return VirtualMachine()
+                else -> {
+                    LOG.error("Resource not found  $resource")
 
                 }
             }

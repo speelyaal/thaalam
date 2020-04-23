@@ -1,10 +1,12 @@
 package com.speelyaal.thaalam.datamodel.vm
 
+import com.speelyaal.thaalam.datamodel.ThaalamResource
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachineStatus
 import java.util.*
 import kotlin.collections.ArrayList
 
-class VirtualMachine(var id: String) {
+class VirtualMachine : ThaalamResource() {
+    var id: String = ""
     var createdDateTime: Date = Date()
     var lastModifiedDateTime: Date = Date()
     var labels : List<String> = ArrayList<String>()

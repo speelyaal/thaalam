@@ -20,7 +20,12 @@ open class ThaalamResource {
         val member = kClass.memberProperties.filterIsInstance<KMutableProperty<*>>()
                 .firstOrNull { it.name == fieldName }
 
-        member?.setter?.call(instance, value)
+
+            member?.setter?.call(instance, value.toString())
+
+
+
+
     }
 
 
