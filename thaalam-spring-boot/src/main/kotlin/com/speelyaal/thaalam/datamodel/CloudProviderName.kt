@@ -1,6 +1,6 @@
 package com.speelyaal.thaalam.datamodel
 
-enum class CloudProviderList {
+enum class CloudProviderName {
     hetzner,
     digitalOcean,
     linode,

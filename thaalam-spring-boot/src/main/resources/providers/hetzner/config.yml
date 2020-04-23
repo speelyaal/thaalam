@@ -3,6 +3,7 @@ apiUrl: https://api.hetzner.cloud/v1
 authorizationType: bearerToken
 resources:
   - regions
-  - vmType
-  - osImage
-  - virtualMachine
+  - virtualMachineTypes
+  - osImages
+  - virtualMachines
+  - sshKeys
