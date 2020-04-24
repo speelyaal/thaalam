@@ -1,5 +1,6 @@
 package com.speelyaal.thaalam.datamodel
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.transformers.utils.DateUtil
 import org.apache.logging.log4j.LogManager
@@ -14,19 +15,21 @@ import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaType
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 abstract class ThaalamResource  {
 
     private val LOG: Logger = LogManager.getLogger(this::class.java)
 
     // Thaalam identifier, used for logging and tracking
-    var id: String=""
-    var name: String =""
-    var tags: List<String> = ArrayList<String>()
-    var createdDateTime: Date = Date()
-    var lastModifiedDateTime: Date = Date()
+    var id: String? = null
+    var name: String? = null
+    var description: String? = null
+    var tags: List<String>? = null
+    var createdDateTime: Date? = null
+    var lastModifiedDateTime: Date? = null
 
     //Vendor identifier, some providers use id some use name. So created a common field called vendorReference
-    var vendorReference: String = ""
+    var vendorReference: String? = null
 
     fun setProperty(fieldName: String, value: Any) {
 
@@ -42,14 +45,18 @@ abstract class ThaalamResource  {
         try {
             valueToSet = when(member?.getter?.returnType?.javaType) {
                 Date::class.java -> {
-
                     //FIXME: Try to remove this split, this is done for a workaround
                     // This is done because teh created date from Hetzner could not be parsed  Text '2019-12-24T09:26:48+00:00' could not be parsed, unparsed text found at index 19
                     DateUtil.asDate(LocalDateTime.parse(value.toString().split("+")[0]))
-
                 }
+                //TODO: Do proper casting avoid toString then toDouble
+                Int::class.java -> value.toString().toInt()
+                Integer::class.java -> value.toString().toDouble()
+                Float::class.java -> value.toString().toDouble()
+                Double::class.java -> value.toString().toDouble()
 
-                else -> value.toString();
+                else ->value.toString();
+
             }!!
 
         }catch (exception: Exception){
@@ -77,10 +84,6 @@ abstract class ThaalamResource  {
 
         val member = kClass.memberProperties.filterIsInstance<KMutableProperty<*>>()
                 .firstOrNull { it.name == fieldName }
-
-
-
-
 
         try {
            return member?.getter?.call(instance)

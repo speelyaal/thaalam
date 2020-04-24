@@ -1,8 +1,8 @@
 
-thaalamType: Region
+thaalamType: OperatingSystemImage
 
 #When we receive regions/locations as a list/array response where it is located in the response
-listPath: $.locations[*]
+listPath: $.images[*]
 
 mapping:
      #Property mapping with Region(class) and jsonPath within the region/location object of Hetzner
@@ -12,7 +12,9 @@ mapping:
      name: $.name
      vendorReference: $.name
      description: $.description
-     countryCode: $.country
-     city: $.city
+     type: $.type
+     imageSize: $.image_size
+     diskSize: $.disk_size
+
 
 

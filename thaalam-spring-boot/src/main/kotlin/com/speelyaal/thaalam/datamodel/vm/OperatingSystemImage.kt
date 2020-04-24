@@ -1,8 +1,12 @@
 package com.speelyaal.thaalam.datamodel.vm
 
-class OperatingSystemImage(var id: String) {
-    var vendorReference: String = ""
-    var description: String = ""
-    var name: String = ""
+import com.speelyaal.thaalam.datamodel.ThaalamResource
+
+class OperatingSystemImage : ThaalamResource() {
+
+    var type: String? = null
+    var imageSize: Double = 0.0
+    var diskSize: Double = 0.0
+
 
 }

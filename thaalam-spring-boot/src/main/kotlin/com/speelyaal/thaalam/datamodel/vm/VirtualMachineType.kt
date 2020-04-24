@@ -1,9 +1,13 @@
 package com.speelyaal.thaalam.datamodel.vm
 
-data class VirtualMachineType(var id: String) {
-    var vendorReference: String =""
-    var description: String =""
-    var cores: Int = 0
-    var memory: Int =0
-    var disk: Int = 0
+
+import com.speelyaal.thaalam.datamodel.ThaalamResource
+
+
+class VirtualMachineType: ThaalamResource() {
+
+    var cores: Double = 0.0
+    var memory: Double =0.0
+    var disk: Double = 0.0
+
 }

@@ -1,8 +1,8 @@
 
-thaalamType: Region
+thaalamType: VirtualMachineType
 
 #When we receive regions/locations as a list/array response where it is located in the response
-listPath: $.locations[*]
+listPath: $.server_types[*]
 
 mapping:
      #Property mapping with Region(class) and jsonPath within the region/location object of Hetzner
@@ -12,7 +12,8 @@ mapping:
      name: $.name
      vendorReference: $.name
      description: $.description
-     countryCode: $.country
-     city: $.city
+     cores: $.cores
+     memory: $.memory
+     disk: $.disk
 
 

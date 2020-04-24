@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
@@ -96,15 +97,12 @@ class RestHelper {
         val entity = this.getHttpEntity(cloudProvider, apiCredentials, resourceToPost)
 
 
-        var result = restTemplate.exchange(
-                url,
-                method.method,
-                entity,
-                Any::class.java)
+        var result = this.restExchange(url, method.method, entity, Any::class.java)
 
 
 
-        return result as Any
+
+        return this.responseTransformer.transformSingleResourceResponse(cloudProvider, resourceName, result)
 
     }
 
@@ -116,6 +114,19 @@ class RestHelper {
 
         //TODO: This(Delete) has to be handle differently for cloud providers
         //For example: Hetzner always sends 200 with action object inside with status whereas Linode sends 200 for succss and default to error
+
+    }
+
+    private fun restExchange(url: String, method: HttpMethod, entity: HttpEntity<Any>, java: Class<Any>): ResponseEntity<Any> {
+
+        //TODO: Exception Handling and Logging
+
+        var result = restTemplate.exchange(
+                url,
+                method,
+                entity,
+                Any::class.java)
+        return result
 
     }
 

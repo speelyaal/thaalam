@@ -51,9 +51,14 @@ class ResponseTransformer {
                 try {
                      tempVal = JsonPath.parse(jsonObject).read(property.value);
                     tmpObject?.setProperty(property.key, tempVal)
+
                 }catch (exception: ClassCastException){
                     LOG.error("Casting error for ${property.key}    - > ${property.value}")
                     LOG.error(exception.message)
+                }catch (exception: IllegalStateException){
+                    LOG.error("Error with property ${property.key} - ${property.value}")
+                    LOG.error(exception.message)
+
                 }
 
             }
