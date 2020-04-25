@@ -7,6 +7,8 @@ import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
 import com.speelyaal.thaalam.transformers.requests.RequestTransformer
 import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -14,11 +16,14 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
+import java.lang.IllegalArgumentException
 
 
 //FIXME: Logger: Logging to be done
 @Component
 class RestHelper {
+
+    private val LOG: Logger = LogManager.getLogger(RestHelper::class.java)
 
     @Autowired
     private lateinit var config: ConfigLoader
@@ -43,12 +48,25 @@ class RestHelper {
 
         val entity = this.getHttpEntity(cloudProvider, apiCredentials)
 
-        var result = restTemplate.exchange(apiUrl + requestMapper?.getAll?.path, HttpMethod.GET, entity, String::class.java)
 
-        //TODO:
+        var result: ResponseEntity<String>
+
+        try {
+            result = restTemplate.exchange(apiUrl + requestMapper?.getAll?.path, HttpMethod.GET, entity, String::class.java)
+            return this.responseTransformer.transformListResponse(cloudProvider, resourceName, result)
+        }catch (exception: IllegalArgumentException){
+            LOG.error(exception.message)
+            LOG.error("  URL is : " + apiUrl + requestMapper?.getAll?.path)
+            exception.printStackTrace()
+
+            //TODO: Thaalam REST Exception
+            throw IllegalArgumentException()
+        }
 
 
-        return this.responseTransformer.transformListResponse(cloudProvider, resourceName, result)
+
+
+
     }
 
     fun getResourceByReference(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, vendorReference: String): Any {
