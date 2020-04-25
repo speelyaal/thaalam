@@ -28,9 +28,9 @@ pipeline {
 
 
 
-                sh "cd thaalam-spring-boot && docker build -f Dockerfile -t speelyaal/thaalam:0.1 ."
-                sh "cd thaalam-spring-boot && docker login -u ${DOCKER_HUB_USERNAME}  -p  ${DOCKER_HUB_PASSWORD}"
-                sh "cd thaalam-spring-boot && docker push speelyaal/thaalam:0.1"
+                sh "docker build -f Dockerfile -t speelyaal/thaalam:0.1 ."
+                sh "docker login -u ${DOCKER_HUB_USERNAME}  -p  ${DOCKER_HUB_PASSWORD}"
+                sh "docker push speelyaal/thaalam:0.1"
             }
         }
 
