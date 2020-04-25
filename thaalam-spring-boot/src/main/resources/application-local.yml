@@ -2,8 +2,8 @@ server:
   port: 9002
 
 thaalam:
+  mappersPath: /Users/ashok/SpeelYaal/Technology/Workspace/thaalam/mappers
   version: 1.0.23
-  mappersPath: /var/cloudMappers
   providers:
     - hetzner
     - linode

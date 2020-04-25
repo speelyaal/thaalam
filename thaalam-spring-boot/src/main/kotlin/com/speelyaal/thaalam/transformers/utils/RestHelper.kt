@@ -56,7 +56,7 @@ class RestHelper {
             return this.responseTransformer.transformListResponse(cloudProvider, resourceName, result)
         }catch (exception: IllegalArgumentException){
             LOG.error(exception.message)
-            LOG.error("  URL is : " + apiUrl + requestMapper?.getAll?.path)
+            LOG.error("URL is : " + apiUrl + requestMapper?.getAll?.path)
             exception.printStackTrace()
 
             //TODO: Thaalam REST Exception

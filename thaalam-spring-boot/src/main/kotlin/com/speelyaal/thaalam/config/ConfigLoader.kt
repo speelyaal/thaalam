@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.speelyaal.thaalam.ThaalamApplication
 import com.speelyaal.thaalam.datamodel.CloudProviderName
 import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
@@ -11,13 +12,12 @@ import com.speelyaal.thaalam.transformers.responses.ResponseMapper
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.system.ApplicationHome
 import org.springframework.stereotype.Component
 import org.springframework.util.ResourceUtils
-import java.io.File
 import java.io.FileNotFoundException
-
 import javax.annotation.PostConstruct
-import kotlin.collections.HashMap
+
 
 @Component
 class ConfigLoader {
@@ -42,11 +42,18 @@ class ConfigLoader {
 
     @PostConstruct
     fun loadConfigurations() {
+
+        val home = ApplicationHome(ThaalamApplication::class.java)
+        LOG.info("Directory is " +   home.dir) // returns the folder where the jar is. This is what I wanted.
+        LOG.info("Absolute Path is " + home.source)
+
+        LOG.debug("")
+
         thaalamProperties.providers.forEach {
             var cloudProvider: CloudProviderName = CloudProviderName.valueOf(it)
 
             try {
-                var providerConfig = ResourceUtils.getFile("classpath:providers/$cloudProvider/config.yml");
+                var providerConfig = ResourceUtils.getFile("${thaalamProperties.mappersPath}/$cloudProvider/config.yml");
 
 
                 var tmpProviderConfiguration: ProviderConfigurations =
@@ -83,16 +90,16 @@ class ConfigLoader {
 
                     var responseConfigFile =
                             ResourceUtils.getFile(
-                                    "classpath:providers/$providerName/resources/$resrouce/$RESPONSE_FILE_NAME");
+                                    "${thaalamProperties.mappersPath}/$providerName/resources/$resrouce/$RESPONSE_FILE_NAME");
                     var tmpResponseMapper: ResponseMapper =
                             objectMapper.readValue(responseConfigFile, ResponseMapper::class.java)
 
                     tempResourceMap[resrouce] = tmpResponseMapper;
 
                 } catch (exception: FileNotFoundException){
-                    LOG.error("Response mapper file not found (providers/$providerName/resources/$resrouce/$RESPONSE_FILE_NAME)")
-                }catch (excption: UnrecognizedPropertyException){
-                    LOG.error("Problem with Yaml file(providers/$providerName/resources/$resrouce/$RESPONSE_FILE_NAME)")
+                    LOG.error("Response mapper file not found (${thaalamProperties.mappersPath}/$providerName/resources/$resrouce/$RESPONSE_FILE_NAME)")
+                }catch (exception: UnrecognizedPropertyException){
+                    LOG.error("Problem with Yaml file(${thaalamProperties.mappersPath}/$providerName/resources/$resrouce/$RESPONSE_FILE_NAME)")
 
                 }
             }
@@ -110,7 +117,7 @@ class ConfigLoader {
 
                     var requestConfigFile =
                             ResourceUtils.getFile(
-                                    "classpath:providers/$providerName/resources/$resource/$REQUEST_FILE_NAME");
+                                    "${thaalamProperties.mappersPath}/$providerName/resources/$resource/$REQUEST_FILE_NAME");
 
                     var tmpRequestMapper: RequestMapper =
                             objectMapper.readValue(requestConfigFile, RequestMapper::class.java)
@@ -118,9 +125,9 @@ class ConfigLoader {
                     tempResourceMap[resource] = tmpRequestMapper;
 
                 } catch (exception: FileNotFoundException){
-                    LOG.error("Request mapper file not found (providers/$providerName/resources/$resource/$REQUEST_FILE_NAME)")
+                    LOG.error("Request mapper file not found (${thaalamProperties.mappersPath}/$providerName/resources/$resource/$REQUEST_FILE_NAME)")
                 } catch (exception: UnrecognizedPropertyException){
-                    LOG.error("Problem with Yaml file(providers/$providerName/resources/$resource/$REQUEST_FILE_NAME)")
+                    LOG.error("Problem with Yaml file(${thaalamProperties.mappersPath}/$providerName/resources/$resource/$REQUEST_FILE_NAME)")
                     LOG.error(exception.message);
 
                 }

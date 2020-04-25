@@ -43,17 +43,17 @@ abstract class ThaalamResource  {
 
 
         try {
-            valueToSet = when(member?.getter?.returnType?.javaType) {
-                Date::class.java -> {
+            valueToSet = when(member?.getter?.returnType?.classifier) {
+                Date::class -> {
                     //FIXME: Try to remove this split, this is done for a workaround
                     // This is done because teh created date from Hetzner could not be parsed  Text '2019-12-24T09:26:48+00:00' could not be parsed, unparsed text found at index 19
                     DateUtil.asDate(LocalDateTime.parse(value.toString().split("+")[0]))
                 }
                 //TODO: Do proper casting avoid toString then toDouble
-                Int::class.java -> value.toString().toInt()
-                Integer::class.java -> value.toString().toDouble()
-                Float::class.java -> value.toString().toDouble()
-                Double::class.java -> value.toString().toDouble()
+                Int::class -> value.toString().toInt()
+                Integer::class -> value.toString().toDouble()
+                Float::class -> value.toString().toDouble()
+                Double::class -> value.toString().toDouble()
 
                 else ->value.toString();
 
