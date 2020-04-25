@@ -23,7 +23,7 @@ pipeline {
 
 
 
-        stage("Dockerize - Leave-service ") {
+        stage("Dockerize - Thaalam Spring Boot -service ") {
             steps {
 
 
