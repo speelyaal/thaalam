@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.speelyaal.thaalam.datamodel.CloudProviderName
 import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
+import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
 import com.speelyaal.thaalam.transformers.utils.RestHelper
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -13,14 +16,20 @@ import org.springframework.web.bind.annotation.*
 class ThaalamResourceController(var restHelper: RestHelper){
 
 
+    private val LOG: Logger = LogManager.getLogger(ThaalamResourceController::class.java)
+
     private val jsonObjectMapper: ObjectMapper = ObjectMapper(JsonFactory());
 
-    //FIXME: Rename API-Token to Auth token
+
     @GetMapping("{resource}")
     fun getAllResources(@PathVariable("resource") resourceName: ResourceName,
                         @RequestHeader("X-Request-ID") requestId: String,
                         @RequestHeader("X-Cloud-Provider") cloudProvider: CloudProviderName,
                         @RequestHeader(value = "X-API-Credentials", required = false) apiCredentials: String="" ): Any {
+
+
+        LOG.debug("Get resources.... ${resourceName} - ${cloudProvider} -- ${apiCredentials} -- ${requestId}")
+
         return restHelper.getResources(cloudProvider,resourceName,apiCredentials)
 
     }
