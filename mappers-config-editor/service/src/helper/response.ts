@@ -4,7 +4,7 @@ import * as Hapi from '@hapi/hapi';
 interface IResponseMeta {
   operation?: string;
   method?: string;
-  paging?: string | null;
+  // paging?: string | null;
 }
 
 interface IResponseError {
@@ -51,7 +51,7 @@ export default function createResponse<T>(
     meta: {
       method: request.method.toUpperCase(),
       operation: request.url.pathname,
-      paging: null,
+      // paging: null,
     },
     data,
     errors,

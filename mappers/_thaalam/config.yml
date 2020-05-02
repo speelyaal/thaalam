@@ -1,0 +1,23 @@
+resources:
+  - regions
+  - virtualMachineTypes
+  - osImages
+  - virtualMachines
+  - sshKeys
+
+resourcesMetadata:
+  - properties:
+    - regions:
+    - virtualMachineTypes:
+    - osImages:
+    - virtualMachines:
+      - name
+      - vmTypeIdentifier
+      - vmRegionIdentifier
+      - osImageIdentifier
+      - rootPassword
+    - sshKeys:
+
+ 
+
+ 
