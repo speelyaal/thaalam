@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.speelyaal.thaalam.datamodel.CloudProviderName
 import com.speelyaal.thaalam.datamodel.ResourceName
+import com.speelyaal.thaalam.datamodel.network.FloatingIP
+import com.speelyaal.thaalam.datamodel.network.Network
+import com.speelyaal.thaalam.datamodel.vm.SSHKey
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
 import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
 import com.speelyaal.thaalam.transformers.utils.RestHelper
@@ -55,7 +58,7 @@ class ThaalamResourceController(var restHelper: RestHelper){
 
 
 
-        return restHelper.createResource(cloudProvider,resourceName,apiCredentials, this.castToResourceType(resourceToCreate))
+        return restHelper.createResource(cloudProvider,resourceName,apiCredentials, this.castToResourceType(resourceName,resourceToCreate))
     }
 
     @PutMapping("{resource}/{reference}")
@@ -78,11 +81,20 @@ class ThaalamResourceController(var restHelper: RestHelper){
                        @RequestBody(required = false) resourceToDelete: Any ){
         return restHelper.deleteResource(cloudProvider,resourceName, apiCredentials, resourceToDelete)
     }
-    private fun castToResourceType(resourceToCreate: Any): Any {
 
-        //TODO: Cast to appropriate type: example to Virtual Machine
+    private fun castToResourceType(resourceName: ResourceName,resourceToCreate: Any): Any {
+
+
         var jsonString = this.jsonObjectMapper.writeValueAsString(resourceToCreate)
-        //TODO: get type from
+
+
+        when(resourceName){
+            ResourceName.virtualMachines ->  return this.jsonObjectMapper.readValue(jsonString, VirtualMachine::class.java )
+            ResourceName.sshKeys ->  return this.jsonObjectMapper.readValue(jsonString, SSHKey::class.java )
+            ResourceName.networks ->  return this.jsonObjectMapper.readValue(jsonString, Network::class.java )
+            ResourceName.floatingIPs ->  return this.jsonObjectMapper.readValue(jsonString, FloatingIP::class.java )
+
+        }
 
         return this.jsonObjectMapper.readValue(jsonString, VirtualMachine::class.java )
 

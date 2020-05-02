@@ -97,6 +97,9 @@ class ResponseTransformer {
                 }catch (exception: ClassCastException){
                     LOG.error("Casting error for ${property.key}    - > ${property.value}")
                     LOG.error(exception.message)
+                }catch (exception: IllegalStateException){
+                    LOG.error("Error Parsing property ${property.key}    - > ${property.value}")
+                    LOG.error(exception.message)
                 }
 
             }

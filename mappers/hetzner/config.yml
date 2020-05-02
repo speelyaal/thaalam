@@ -7,3 +7,5 @@ resources:
   - osImages
   - virtualMachines
   - sshKeys
+  - networks
+  - floatingIPs

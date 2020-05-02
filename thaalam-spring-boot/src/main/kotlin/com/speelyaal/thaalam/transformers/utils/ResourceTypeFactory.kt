@@ -1,10 +1,11 @@
 package com.speelyaal.thaalam.transformers.utils
 
-import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.datamodel.Region
-import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.datamodel.ThaalamResource
+import com.speelyaal.thaalam.datamodel.network.FloatingIP
+import com.speelyaal.thaalam.datamodel.network.Network
 import com.speelyaal.thaalam.datamodel.vm.OperatingSystemImage
+import com.speelyaal.thaalam.datamodel.vm.SSHKey
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachineType
 import org.apache.logging.log4j.LogManager
@@ -19,6 +20,9 @@ class ResourceTypeFactory {
         VirtualMachine,
         VirtualMachineType,
         OperatingSystemImage,
+        SSHKey,
+        Network,
+        FloatingIP,
         None
     }
 
@@ -32,6 +36,9 @@ class ResourceTypeFactory {
                 ResourceTypes.VirtualMachine -> return VirtualMachine()
                 ResourceTypes.VirtualMachineType -> return VirtualMachineType()
                 ResourceTypes.OperatingSystemImage -> return OperatingSystemImage()
+                ResourceTypes.SSHKey -> return SSHKey()
+                ResourceTypes.Network -> return Network()
+                ResourceTypes.FloatingIP -> return FloatingIP()
                 else -> {
                     LOG.error("Resource not found  $resource")
                 }
