@@ -5,5 +5,7 @@ enum class ResourceName {
     virtualMachineTypes,
     osImages,
     virtualMachines,
-    sshKeys
+    sshKeys,
+    networks,
+    floatingIPs
 }

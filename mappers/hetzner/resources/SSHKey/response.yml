@@ -1,9 +1,9 @@
 
-thaalamType: VirtualMachine
+thaalamType: SSHKey
 
 #When we receive regions/locations as a list/array response where it is located in the response
-listPath: $.servers[*]
-singleInstancePath: $.server
+listPath: $.ssh_keys[*]
+singleInstancePath: $.ssh_key
 
 mapping:
      #Property mapping with Region(class) and jsonPath within the region/location object of Hetzner
@@ -12,8 +12,7 @@ mapping:
      name: $.name
      vendorReference: $.id
      description: $.name
-     osImageIdentifier: $.image.id
-     vmTypeIdentifier: $.server_type.name
-     vmRegionIdentifier: $.datacenter.location.name
+     fingerprint: $.fingerprint
+     publicKey: $.public_key
      createdDateTime: $.created
 

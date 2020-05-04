@@ -1,10 +1,12 @@
 package com.speelyaal.thaalam.transformers.utils
 
-import com.speelyaal.thaalam.config.ConfigLoader
-import com.speelyaal.thaalam.datamodel.Region
-import com.speelyaal.thaalam.datamodel.ResourceName
+import com.speelyaal.thaalam.datamodel.Location
+import com.speelyaal.thaalam.datamodel.ResourceType
 import com.speelyaal.thaalam.datamodel.ThaalamResource
+import com.speelyaal.thaalam.datamodel.network.FloatingIP
+import com.speelyaal.thaalam.datamodel.network.Network
 import com.speelyaal.thaalam.datamodel.vm.OperatingSystemImage
+import com.speelyaal.thaalam.datamodel.vm.SSHKey
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachineType
 import org.apache.logging.log4j.LogManager
@@ -14,24 +16,21 @@ class ResourceTypeFactory {
 
     private val LOG: Logger = LogManager.getLogger(ResourceTypeFactory::class.java)
 
-    enum class ResourceTypes {
-        Region,
-        VirtualMachine,
-        VirtualMachineType,
-        OperatingSystemImage,
-        None
-    }
+
 
     companion object {
 
         private val LOG: Logger = LogManager.getLogger(ResourceTypeFactory::class.java)
-        fun getInstance(resource: ResourceTypes): ThaalamResource? {
+        fun getInstance(resource: ResourceType): ThaalamResource? {
 
             when (resource) {
-                ResourceTypes.Region -> return Region()
-                ResourceTypes.VirtualMachine -> return VirtualMachine()
-                ResourceTypes.VirtualMachineType -> return VirtualMachineType()
-                ResourceTypes.OperatingSystemImage -> return OperatingSystemImage()
+                ResourceType.Location -> return Location()
+                ResourceType.VirtualMachine -> return VirtualMachine()
+                ResourceType.VirtualMachineType -> return VirtualMachineType()
+                ResourceType.OperatingSystemImage -> return OperatingSystemImage()
+                ResourceType.SSHKey -> return SSHKey()
+                ResourceType.Network -> return Network()
+                ResourceType.FloatingIP -> return FloatingIP()
                 else -> {
                     LOG.error("Resource not found  $resource")
                 }

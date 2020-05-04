@@ -2,7 +2,7 @@ package com.speelyaal.thaalam.datamodel
 
 
 
-class Region : ThaalamResource() {
+class Location : ThaalamResource() {
 
     var countryCode: String =""
     var city: String =""

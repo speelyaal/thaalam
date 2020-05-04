@@ -3,7 +3,7 @@ package com.speelyaal.thaalam.transformers.utils
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.config.ProviderConfigurations
 import com.speelyaal.thaalam.datamodel.CloudProviderName
-import com.speelyaal.thaalam.datamodel.ResourceName
+import com.speelyaal.thaalam.datamodel.ResourceType
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
 import com.speelyaal.thaalam.transformers.requests.RequestTransformer
 import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
@@ -37,11 +37,11 @@ class RestHelper {
     private var restTemplate = RestTemplate()
 
 
-    fun getResources(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String): Any {
+    fun getResources(cloudProvider: CloudProviderName, resourceType: ResourceType, apiCredentials: String): Any {
 
 
         //TODO: Error handling when Request Mapper is not found
-        var requestMapper: RequestMapper? = this.config.requestObjectMappers[cloudProvider]?.get(resourceName)
+        var requestMapper: RequestMapper? = this.config.requestObjectMappers[cloudProvider]?.get(resourceType)
 
 
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
@@ -53,7 +53,7 @@ class RestHelper {
 
         try {
             result = restTemplate.exchange(apiUrl + requestMapper?.getAll?.path, HttpMethod.GET, entity, String::class.java)
-            return this.responseTransformer.transformListResponse(cloudProvider, resourceName, result)
+            return this.responseTransformer.transformListResponse(cloudProvider, resourceType, result)
         }catch (exception: IllegalArgumentException){
             LOG.error(exception.message)
             LOG.error("URL is : " + apiUrl + requestMapper?.getAll?.path)
@@ -69,10 +69,10 @@ class RestHelper {
 
     }
 
-    fun getResourceByReference(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, vendorReference: String): Any {
+    fun getResourceByReference(cloudProvider: CloudProviderName, resourceType: ResourceType, apiCredentials: String, vendorReference: String): Any {
 
 
-        var requestMapper = this.getRequestMapper(cloudProvider, resourceName)
+        var requestMapper = this.getRequestMapper(cloudProvider, resourceType)
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
 
         val entity = this.getHttpEntity(cloudProvider, apiCredentials)
@@ -83,21 +83,21 @@ class RestHelper {
 
 
 
-        return this.responseTransformer.transformSingleResourceResponse(cloudProvider, resourceName, result)
+        return this.responseTransformer.transformSingleResourceResponse(cloudProvider, resourceType, result)
     }
 
-    private fun getRequestMapper(cloudProvider: CloudProviderName, resourceName: ResourceName): RequestMapper {
+    private fun getRequestMapper(cloudProvider: CloudProviderName, resourceType: ResourceType): RequestMapper {
 
         //TODO: Error handling when Request Mapper is not found
-        return this.config.requestObjectMappers[cloudProvider]?.get(resourceName)!!
+        return this.config.requestObjectMappers[cloudProvider]?.get(resourceType)!!
     }
 
-    fun <T> createResource(cloudProvider: CloudProviderName,
-                           resourceName: ResourceName,
-                           apiCredentials: String,
-                           resourceToCreate: T): Any {
+    fun createResource(cloudProvider: CloudProviderName,
+                       resourceType: ResourceType,
+                       apiCredentials: String,
+                       resourceToCreate: Any): Any {
 
-        var requestMapper = this.getRequestMapper(cloudProvider, resourceName)
+        var requestMapper = this.getRequestMapper(cloudProvider, resourceType)
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl
 
 
@@ -107,7 +107,7 @@ class RestHelper {
         var resourceToPost =
                 this.requestTransformer.transformResourceToPost(
                         cloudProvider,
-                        resourceName,
+                        resourceType,
                         resourceToCreate,
                         method.body)
 
@@ -120,15 +120,15 @@ class RestHelper {
 
 
 
-        return this.responseTransformer.transformSingleResourceResponse(cloudProvider, resourceName, result)
+        return this.responseTransformer.transformSingleResourceResponse(cloudProvider, resourceType, result)
 
     }
 
-    fun updateResource(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, resourceToUpdate: Any) {
+    fun updateResource(cloudProvider: CloudProviderName, resourceType: ResourceType, apiCredentials: String, resourceToUpdate: Any) {
 
     }
 
-    fun deleteResource(cloudProvider: CloudProviderName, resourceName: ResourceName, apiCredentials: String, resourceToDelete: Any) {
+    fun deleteResource(cloudProvider: CloudProviderName, resourceType: ResourceType, apiCredentials: String, resourceToDelete: Any) {
 
         //TODO: This(Delete) has to be handle differently for cloud providers
         //For example: Hetzner always sends 200 with action object inside with status whereas Linode sends 200 for succss and default to error

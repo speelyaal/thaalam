@@ -1,0 +1,26 @@
+thaalamType: FloatingIP
+getAll:
+  method: GET
+  path: /floating_ips
+getByReference:
+  method: GET
+  path: /floating_ips/{reference}
+create:
+  method: POST
+  path: /floating_ips
+  body:
+    name: name
+    home_location: ipLocationIdentifier
+    type: ipType
+update:
+  method: PUT
+  path: /floating_ips/{reference}
+delete:
+  method: DELETE
+  path: /floating_ips/{reference}
+
+
+
+
+
+

@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.speelyaal.thaalam.ThaalamApplication
 import com.speelyaal.thaalam.datamodel.CloudProviderName
-import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
 import com.speelyaal.thaalam.transformers.responses.ResponseMapper
+import com.speelyaal.thaalam.datamodel.ResourceType
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,10 +35,10 @@ class ConfigLoader {
             HashMap<CloudProviderName, ProviderConfigurations> = HashMap()
 
     var requestObjectMappers:
-            HashMap<CloudProviderName, HashMap<ResourceName, RequestMapper>> = HashMap()
+            HashMap<CloudProviderName, HashMap<ResourceType, RequestMapper>> = HashMap()
 
     var responseObjectMappers:
-            HashMap<CloudProviderName, HashMap<ResourceName, ResponseMapper>> = HashMap()
+            HashMap<CloudProviderName, HashMap<ResourceType, ResponseMapper>> = HashMap()
 
     @PostConstruct
     fun loadConfigurations() {
@@ -82,7 +82,7 @@ class ConfigLoader {
     private fun loadResponseMappers() {
         this.providerConfigurations.forEach{ providerConfig ->
             var providerName = providerConfig.key;
-            var tempResourceMap : HashMap<ResourceName, ResponseMapper> = HashMap()
+            var tempResourceMap : HashMap<ResourceType, ResponseMapper> = HashMap()
 
             providerConfig.value.resources.forEach { resrouce ->
                 try {
@@ -110,7 +110,7 @@ class ConfigLoader {
     private fun loadRequestMappers(){
         this.providerConfigurations.forEach{ providerConfig ->
             var providerName = providerConfig.key;
-            var tempResourceMap : HashMap<ResourceName, RequestMapper> = HashMap()
+            var tempResourceMap : HashMap<ResourceType, RequestMapper> = HashMap()
 
             providerConfig.value.resources.forEach { resource ->
                 try {
