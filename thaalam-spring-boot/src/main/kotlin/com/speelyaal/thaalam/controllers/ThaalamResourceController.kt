@@ -1,14 +1,7 @@
 package com.speelyaal.thaalam.controllers
 
-import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.speelyaal.thaalam.datamodel.CloudProviderName
-import com.speelyaal.thaalam.datamodel.ResourceName
-import com.speelyaal.thaalam.datamodel.network.FloatingIP
-import com.speelyaal.thaalam.datamodel.network.Network
-import com.speelyaal.thaalam.datamodel.vm.SSHKey
-import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
-import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
+import com.speelyaal.thaalam.transformers.utils.ResourceType
 import com.speelyaal.thaalam.transformers.utils.RestHelper
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -21,11 +14,11 @@ class ThaalamResourceController(var restHelper: RestHelper){
 
     private val LOG: Logger = LogManager.getLogger(ThaalamResourceController::class.java)
 
-    private val jsonObjectMapper: ObjectMapper = ObjectMapper(JsonFactory());
+
 
 
     @GetMapping("{resource}")
-    fun getAllResources(@PathVariable("resource") resourceName: ResourceName,
+    fun getAllResources(@PathVariable("resource") resourceName: String,
                         @RequestHeader("X-Request-ID") requestId: String,
                         @RequestHeader("X-Cloud-Provider") cloudProvider: CloudProviderName,
                         @RequestHeader(value = "X-API-Credentials", required = false) apiCredentials: String="" ): Any {
@@ -33,24 +26,26 @@ class ThaalamResourceController(var restHelper: RestHelper){
 
         LOG.debug("Get resources.... ${resourceName} - ${cloudProvider} -- ${apiCredentials} -- ${requestId}")
 
-        return restHelper.getResources(cloudProvider,resourceName,apiCredentials)
+
+
+        return restHelper.getResources(cloudProvider,this.getResourceType(resourceName),apiCredentials)
 
     }
 
     @GetMapping("{resource}/{reference}")
-    fun getResourceByReference(@PathVariable("resource") resourceName: ResourceName,
+    fun getResourceByReference(@PathVariable("resource") resourceName: String,
                                @PathVariable("reference") vendorReference: String,
                                @RequestHeader("X-Request-ID") requestId: String,
                                @RequestHeader("X-Cloud-Provider") cloudProvider: CloudProviderName,
                                @RequestHeader(value = "X-API-Credentials", required = false) apiCredentials: String=""
                                ): Any {
-        return restHelper.getResourceByReference(cloudProvider,resourceName,apiCredentials, vendorReference)
+        return restHelper.getResourceByReference(cloudProvider,this.getResourceType(resourceName),apiCredentials, vendorReference)
 
     }
 
 
     @PostMapping("{resource}")
-    fun createResource(@PathVariable("resource") resourceName: ResourceName,
+    fun createResource(@PathVariable("resource") resourceName: String,
                        @RequestHeader("X-Request-ID") requestId: String,
                        @RequestHeader("X-Cloud-Provider") cloudProvider: CloudProviderName,
                        @RequestHeader(value = "X-API-Credentials", required = false) apiCredentials: String="",
@@ -58,45 +53,44 @@ class ThaalamResourceController(var restHelper: RestHelper){
 
 
 
-        return restHelper.createResource(cloudProvider,resourceName,apiCredentials, this.castToResourceType(resourceName,resourceToCreate))
+        return restHelper.createResource(cloudProvider,this.getResourceType(resourceName),apiCredentials, resourceToCreate)
     }
 
     @PutMapping("{resource}/{reference}")
-    fun updateResource(@PathVariable("resource") resourceName: ResourceName,
+    fun updateResource(@PathVariable("resource") resourceName: String,
                        @PathVariable("reference") vendorReference: String,
                        @RequestHeader("X-Request-ID") requestId: String,
                        @RequestHeader("X-Cloud-Provider") cloudProvider: CloudProviderName,
                        @RequestHeader(value = "X-API-Credentials", required = false) apiCredentials: String="",
                        @RequestBody resourceToUpdate: Any ){
-        return restHelper.updateResource(cloudProvider,resourceName, apiCredentials, resourceToUpdate)
+        return restHelper.updateResource(cloudProvider,this.getResourceType(resourceName), apiCredentials, resourceToUpdate)
     }
 
 
     @DeleteMapping("{resource}/{reference}")
-    fun deleteResource(@PathVariable("resource") resourceName: ResourceName,
+    fun deleteResource(@PathVariable("resource") resourceName: String,
                        @PathVariable("reference") vendorReference: String,
                        @RequestHeader("X-Request-ID") requestId: String,
                        @RequestHeader("X-Cloud-Provider") cloudProvider: CloudProviderName,
                        @RequestHeader(value = "X-API-Credentials", required = false) apiCredentials: String="",
                        @RequestBody(required = false) resourceToDelete: Any ){
-        return restHelper.deleteResource(cloudProvider,resourceName, apiCredentials, resourceToDelete)
+        return restHelper.deleteResource(cloudProvider,this.getResourceType(resourceName), apiCredentials, resourceToDelete)
     }
 
-    private fun castToResourceType(resourceName: ResourceName,resourceToCreate: Any): Any {
 
 
-        var jsonString = this.jsonObjectMapper.writeValueAsString(resourceToCreate)
-
-
-        when(resourceName){
-            ResourceName.virtualMachines ->  return this.jsonObjectMapper.readValue(jsonString, VirtualMachine::class.java )
-            ResourceName.sshKeys ->  return this.jsonObjectMapper.readValue(jsonString, SSHKey::class.java )
-            ResourceName.networks ->  return this.jsonObjectMapper.readValue(jsonString, Network::class.java )
-            ResourceName.floatingIPs ->  return this.jsonObjectMapper.readValue(jsonString, FloatingIP::class.java )
+    private fun getResourceType(resourceName: String): ResourceType {
+        when(resourceName.toLowerCase()){
+            "virtualmachines" ->  return ResourceType.VirtualMachine
+            "sshkeys" ->  return ResourceType.SSHKey
+            "networks" ->  return ResourceType.Network
+            "floatingips" ->  return ResourceType.FloatingIP
+            "virtualmachinetypes" -> return ResourceType.VirtualMachineType
+            "osimages" -> return ResourceType.OperatingSystemImage
 
         }
 
-        return this.jsonObjectMapper.readValue(jsonString, VirtualMachine::class.java )
+        return ResourceType.None
 
     }
 

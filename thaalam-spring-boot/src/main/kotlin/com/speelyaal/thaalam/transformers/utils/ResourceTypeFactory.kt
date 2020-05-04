@@ -15,30 +15,21 @@ class ResourceTypeFactory {
 
     private val LOG: Logger = LogManager.getLogger(ResourceTypeFactory::class.java)
 
-    enum class ResourceTypes {
-        Region,
-        VirtualMachine,
-        VirtualMachineType,
-        OperatingSystemImage,
-        SSHKey,
-        Network,
-        FloatingIP,
-        None
-    }
+
 
     companion object {
 
         private val LOG: Logger = LogManager.getLogger(ResourceTypeFactory::class.java)
-        fun getInstance(resource: ResourceTypes): ThaalamResource? {
+        fun getInstance(resource: ResourceType): ThaalamResource? {
 
             when (resource) {
-                ResourceTypes.Region -> return Region()
-                ResourceTypes.VirtualMachine -> return VirtualMachine()
-                ResourceTypes.VirtualMachineType -> return VirtualMachineType()
-                ResourceTypes.OperatingSystemImage -> return OperatingSystemImage()
-                ResourceTypes.SSHKey -> return SSHKey()
-                ResourceTypes.Network -> return Network()
-                ResourceTypes.FloatingIP -> return FloatingIP()
+                ResourceType.Region -> return Region()
+                ResourceType.VirtualMachine -> return VirtualMachine()
+                ResourceType.VirtualMachineType -> return VirtualMachineType()
+                ResourceType.OperatingSystemImage -> return OperatingSystemImage()
+                ResourceType.SSHKey -> return SSHKey()
+                ResourceType.Network -> return Network()
+                ResourceType.FloatingIP -> return FloatingIP()
                 else -> {
                     LOG.error("Resource not found  $resource")
                 }

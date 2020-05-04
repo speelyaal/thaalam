@@ -12,7 +12,7 @@ mapping:
      name: $.name
      vendorReference: $.id
      description: $.name
-     fingerPrint: $.fingerprint
+     fingerprint: $.fingerprint
      publicKey: $.public_key
      createdDateTime: $.created
 

@@ -1,6 +1,7 @@
 package com.speelyaal.thaalam.config
 
 import com.speelyaal.thaalam.datamodel.ResourceName
+import com.speelyaal.thaalam.transformers.utils.ResourceType
 
 class ProviderConfigurations {
 
@@ -8,12 +9,12 @@ class ProviderConfigurations {
     var apiVersion: String = "v1"
     var apiUrl: String ="[URL]"
     var authorizationType: AuthorizationType = AuthorizationType.bearerToken
-    var resources: List<ResourceName> = arrayListOf(
-            ResourceName.regions,
-            ResourceName.osImages,
-            ResourceName.virtualMachineTypes,
-            ResourceName.virtualMachines,
-            ResourceName.sshKeys
+    var resources: List<ResourceType> = arrayListOf(
+            ResourceType.Region,
+            ResourceType.OperatingSystemImage,
+            ResourceType.VirtualMachineType,
+            ResourceType.VirtualMachine,
+            ResourceType.SSHKey
     )
 
     enum class AuthorizationType {
