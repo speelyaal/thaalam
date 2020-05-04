@@ -1,7 +1,6 @@
 package com.speelyaal.thaalam.transformers.responses
 
-import com.speelyaal.thaalam.transformers.utils.ResourceType
-import com.speelyaal.thaalam.transformers.utils.ResourceTypeFactory
+import com.speelyaal.thaalam.datamodel.ResourceType
 
 class ResponseMapper {
 

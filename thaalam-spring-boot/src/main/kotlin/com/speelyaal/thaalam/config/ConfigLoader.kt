@@ -8,7 +8,7 @@ import com.speelyaal.thaalam.ThaalamApplication
 import com.speelyaal.thaalam.datamodel.CloudProviderName
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
 import com.speelyaal.thaalam.transformers.responses.ResponseMapper
-import com.speelyaal.thaalam.transformers.utils.ResourceType
+import com.speelyaal.thaalam.datamodel.ResourceType
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired

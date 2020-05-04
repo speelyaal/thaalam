@@ -3,6 +3,7 @@ package com.speelyaal.thaalam.transformers.utils
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.config.ProviderConfigurations
 import com.speelyaal.thaalam.datamodel.CloudProviderName
+import com.speelyaal.thaalam.datamodel.ResourceType
 import com.speelyaal.thaalam.transformers.requests.RequestMapper
 import com.speelyaal.thaalam.transformers.requests.RequestTransformer
 import com.speelyaal.thaalam.transformers.responses.ResponseTransformer
@@ -92,9 +93,9 @@ class RestHelper {
     }
 
     fun createResource(cloudProvider: CloudProviderName,
-                           resourceType: ResourceType,
-                           apiCredentials: String,
-                           resourceToCreate: Any): Any {
+                       resourceType: ResourceType,
+                       apiCredentials: String,
+                       resourceToCreate: Any): Any {
 
         var requestMapper = this.getRequestMapper(cloudProvider, resourceType)
         var apiUrl = this.config.providerConfigurations[cloudProvider]?.apiUrl

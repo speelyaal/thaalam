@@ -1,6 +1,7 @@
 package com.speelyaal.thaalam.transformers.utils
 
-import com.speelyaal.thaalam.datamodel.Region
+import com.speelyaal.thaalam.datamodel.Location
+import com.speelyaal.thaalam.datamodel.ResourceType
 import com.speelyaal.thaalam.datamodel.ThaalamResource
 import com.speelyaal.thaalam.datamodel.network.FloatingIP
 import com.speelyaal.thaalam.datamodel.network.Network
@@ -23,7 +24,7 @@ class ResourceTypeFactory {
         fun getInstance(resource: ResourceType): ThaalamResource? {
 
             when (resource) {
-                ResourceType.Region -> return Region()
+                ResourceType.Location -> return Location()
                 ResourceType.VirtualMachine -> return VirtualMachine()
                 ResourceType.VirtualMachineType -> return VirtualMachineType()
                 ResourceType.OperatingSystemImage -> return OperatingSystemImage()

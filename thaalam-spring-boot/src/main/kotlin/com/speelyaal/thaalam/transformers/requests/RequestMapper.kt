@@ -1,6 +1,6 @@
 package com.speelyaal.thaalam.transformers.requests
 
-import com.speelyaal.thaalam.transformers.utils.ResourceType
+import com.speelyaal.thaalam.datamodel.ResourceType
 import org.springframework.http.HttpMethod
 
 

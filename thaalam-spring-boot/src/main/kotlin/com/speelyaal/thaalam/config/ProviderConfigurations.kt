@@ -1,7 +1,6 @@
 package com.speelyaal.thaalam.config
 
-import com.speelyaal.thaalam.datamodel.ResourceName
-import com.speelyaal.thaalam.transformers.utils.ResourceType
+import com.speelyaal.thaalam.datamodel.ResourceType
 
 class ProviderConfigurations {
 
@@ -10,7 +9,7 @@ class ProviderConfigurations {
     var apiUrl: String ="[URL]"
     var authorizationType: AuthorizationType = AuthorizationType.bearerToken
     var resources: List<ResourceType> = arrayListOf(
-            ResourceType.Region,
+            ResourceType.Location,
             ResourceType.OperatingSystemImage,
             ResourceType.VirtualMachineType,
             ResourceType.VirtualMachine,

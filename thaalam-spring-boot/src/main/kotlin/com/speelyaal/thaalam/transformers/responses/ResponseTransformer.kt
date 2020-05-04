@@ -5,7 +5,7 @@ import com.jayway.jsonpath.JsonPath
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.datamodel.CloudProviderName
 import com.speelyaal.thaalam.transformers.exceptions.ResponseMapperNotFoundException
-import com.speelyaal.thaalam.transformers.utils.ResourceType
+import com.speelyaal.thaalam.datamodel.ResourceType
 import com.speelyaal.thaalam.transformers.utils.ResourceTypeFactory
 import net.minidev.json.JSONArray
 import org.apache.logging.log4j.LogManager

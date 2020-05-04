@@ -1,11 +1,10 @@
 package com.speelyaal.thaalam.transformers.requests
 
 import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.datamodel.CloudProviderName
-import com.speelyaal.thaalam.datamodel.Region
+import com.speelyaal.thaalam.datamodel.Location
 
 
 import com.speelyaal.thaalam.datamodel.ThaalamResource
@@ -15,7 +14,7 @@ import com.speelyaal.thaalam.datamodel.vm.OperatingSystemImage
 import com.speelyaal.thaalam.datamodel.vm.SSHKey
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachine
 import com.speelyaal.thaalam.datamodel.vm.VirtualMachineType
-import com.speelyaal.thaalam.transformers.utils.ResourceType
+import com.speelyaal.thaalam.datamodel.ResourceType
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,9 +32,9 @@ class RequestTransformer {
     private val jsonObjectMapper: ObjectMapper = ObjectMapper(JsonFactory());
 
     fun transformResourceToPost(cloudProvider: CloudProviderName,
-                                    resourceType: ResourceType,
-                                    resourceToCreate: Any,
-                                    mapping: HashMap<String, String>): Map<String, Any?> {
+                                resourceType: ResourceType,
+                                resourceToCreate: Any,
+                                mapping: HashMap<String, String>): Map<String, Any?> {
 
 
 
@@ -56,7 +55,7 @@ class RequestTransformer {
     }
 
 
-    private fun castToResourceType(resourceType: ResourceType,resourceToCreate: Any): ThaalamResource {
+    private fun castToResourceType(resourceType: ResourceType, resourceToCreate: Any): ThaalamResource {
 
 
         var jsonString = this.jsonObjectMapper.writeValueAsString(resourceToCreate)
@@ -67,7 +66,7 @@ class RequestTransformer {
            ResourceType.SSHKey ->  return this.jsonObjectMapper.readValue(jsonString, SSHKey::class.java )
            ResourceType.Network ->  return this.jsonObjectMapper.readValue(jsonString, Network::class.java )
            ResourceType.FloatingIP ->  return this.jsonObjectMapper.readValue(jsonString, FloatingIP::class.java )
-            ResourceType.Region ->  return this.jsonObjectMapper.readValue(jsonString, Region::class.java )
+            ResourceType.Location ->  return this.jsonObjectMapper.readValue(jsonString, Location::class.java )
             ResourceType.VirtualMachineType ->  return this.jsonObjectMapper.readValue(jsonString, VirtualMachineType::class.java )
             ResourceType.OperatingSystemImage ->  return this.jsonObjectMapper.readValue(jsonString, OperatingSystemImage::class.java )
             ResourceType.None -> {

@@ -1,7 +1,7 @@
 package com.speelyaal.thaalam.controllers
 
 import com.speelyaal.thaalam.datamodel.CloudProviderName
-import com.speelyaal.thaalam.transformers.utils.ResourceType
+import com.speelyaal.thaalam.datamodel.ResourceType
 import com.speelyaal.thaalam.transformers.utils.RestHelper
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -87,6 +87,7 @@ class ThaalamResourceController(var restHelper: RestHelper){
             "floatingips" ->  return ResourceType.FloatingIP
             "virtualmachinetypes" -> return ResourceType.VirtualMachineType
             "osimages" -> return ResourceType.OperatingSystemImage
+            "locations" ->  return ResourceType.Location
 
         }
 

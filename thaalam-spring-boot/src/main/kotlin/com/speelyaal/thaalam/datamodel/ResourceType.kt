@@ -1,7 +1,7 @@
-package com.speelyaal.thaalam.transformers.utils
+package com.speelyaal.thaalam.datamodel
 
 enum class ResourceType {
-    Region,
+    Location,
     VirtualMachine,
     VirtualMachineType,
     OperatingSystemImage,
