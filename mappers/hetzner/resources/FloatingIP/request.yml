@@ -10,7 +10,7 @@ create:
   path: /floating_ips
   body:
     name: name
-    home_location: ipRegionIdentifier
+    home_location: ipLocationIdentifier
     type: ipType
 update:
   method: PUT

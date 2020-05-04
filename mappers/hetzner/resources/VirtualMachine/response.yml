@@ -14,6 +14,6 @@ mapping:
      description: $.name
      osImageIdentifier: $.image.id
      vmTypeIdentifier: $.server_type.name
-     vmRegionIdentifier: $.datacenter.location.name
+     vmLocationIdentifier: $.datacenter.location.name
      createdDateTime: $.created
 

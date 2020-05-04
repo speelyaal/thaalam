@@ -12,6 +12,6 @@ mapping:
      description: $.label
      osImageIdentifier: $.image
      vmTypeIdentifier: $.type
-     vmRegionIdentifier: $.region
+     vmLocationIdentifier: $.region
      createdDateTime: $.created
 

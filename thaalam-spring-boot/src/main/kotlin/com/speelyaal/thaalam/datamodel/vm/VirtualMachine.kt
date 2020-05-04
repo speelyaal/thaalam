@@ -12,7 +12,7 @@ class VirtualMachine : ThaalamResource()  {
 
     var osImageIdentifier: String =""
     var vmTypeIdentifier: String =""
-    var vmRegionIdentifier: String = ""
+    var vmLocationIdentifier: String = ""
     var group: String =""
     var sshKeys: List<SSHKey> = ArrayList<SSHKey>()
     var ipv4: List<String> = ArrayList<String>()
