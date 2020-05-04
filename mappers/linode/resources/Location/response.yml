@@ -1,4 +1,4 @@
-thaalamType: Region
+thaalamType: Location
 listPath: $.data[*]
 mapping:
   #Property mapping with Region(class) and jsonPath within the region/location object of Hetzner

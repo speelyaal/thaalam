@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.datamodel.CloudProviderName
-import com.speelyaal.thaalam.datamodel.ResourceName
 import com.speelyaal.thaalam.transformers.exceptions.ResponseMapperNotFoundException
+import com.speelyaal.thaalam.datamodel.ResourceType
 import com.speelyaal.thaalam.transformers.utils.ResourceTypeFactory
 import net.minidev.json.JSONArray
 import org.apache.logging.log4j.LogManager
@@ -25,7 +25,7 @@ class ResponseTransformer {
     @Autowired
     lateinit var config: ConfigLoader
 
-    fun transformListResponse(cloudProvider: CloudProviderName, resource: ResourceName, result: ResponseEntity<String>): Any {
+    fun transformListResponse(cloudProvider: CloudProviderName, resource: ResourceType, result: ResponseEntity<String>): Any {
 
         var responseMapper = this.getResponseMapper(cloudProvider, resource)
         var mapping = responseMapper.mapping
@@ -75,7 +75,7 @@ class ResponseTransformer {
 
     }
 
-    fun transformSingleResourceResponse(cloudProvider: CloudProviderName, resource: ResourceName, result: ResponseEntity<Any>): Any {
+    fun transformSingleResourceResponse(cloudProvider: CloudProviderName, resource: ResourceType, result: ResponseEntity<Any>): Any {
         var responseMapper = this.getResponseMapper(cloudProvider, resource)
 
         var mapping = responseMapper.mapping
@@ -97,6 +97,9 @@ class ResponseTransformer {
                 }catch (exception: ClassCastException){
                     LOG.error("Casting error for ${property.key}    - > ${property.value}")
                     LOG.error(exception.message)
+                }catch (exception: IllegalStateException){
+                    LOG.error("Error Parsing property ${property.key}    - > ${property.value}")
+                    LOG.error(exception.message)
                 }
 
             }
@@ -108,7 +111,7 @@ class ResponseTransformer {
         return tmpResultObject as Any
     }
 
-    private fun getResponseMapper(cloudProvider: CloudProviderName, resource: ResourceName): ResponseMapper {
+    private fun getResponseMapper(cloudProvider: CloudProviderName, resource: ResourceType): ResponseMapper {
 
         this.config.responseObjectMappers[cloudProvider].let {
             var responseMapper = it?.get(resource)

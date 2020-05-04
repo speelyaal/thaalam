@@ -1,0 +1,17 @@
+
+thaalamType: VirtualMachine
+#When we receive regions/locations as a list/array response where it is located in the response
+listPath: $.data[*]
+singleInstancePath: $
+mapping:
+     #Property mapping with Region(class) and jsonPath within the region/location object of Hetzner
+     #This Json Path is "within" the each individual resource object. Do not give Json Path from the root of the response.
+     id: $.id
+     name: $.label
+     vendorReference: $.id
+     description: $.label
+     osImageIdentifier: $.image
+     vmTypeIdentifier: $.type
+     vmLocationIdentifier: $.region
+     createdDateTime: $.created
+

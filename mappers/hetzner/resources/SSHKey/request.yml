@@ -1,0 +1,25 @@
+thaalamType: SSHKey
+getAll:
+  method: GET
+  path: /ssh_keys
+getByReference:
+  method: GET
+  path: /ssh_keys/{reference}
+create:
+  method: POST
+  path: /ssh_keys
+  body:
+    name: name
+    public_key: publicKey
+update:
+  method: PUT
+  path: /ssh_keys/{reference}
+delete:
+  method: DELETE
+  path: /ssh_keys/{reference}
+
+
+
+
+
+

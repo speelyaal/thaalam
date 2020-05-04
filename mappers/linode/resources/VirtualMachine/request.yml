@@ -11,7 +11,7 @@ create:
   body:
     label: name
     type: vmTypeIdentifier
-    region: vmRegionIdentifier
+    region: vmLocationIdentifier
     image: osImageIdentifier
     root_pass: rootPassword
     #ssh_keys: sshKeys:vendorReference
