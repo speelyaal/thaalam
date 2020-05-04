@@ -1,0 +1,19 @@
+{
+    "cloudProviders": [
+        {
+            "name": "Hetzner",
+            "config": {
+                "apiVersion": "v1",
+                "apiUrl": "https://api.hetzner.cloud/v1",
+                "authorizationType": "bearerToken",
+                "resources": [
+                    "regions",
+                    "virtualMachineTypes",
+                    "osImages",
+                    "virtualMachines",
+                    "sshKeys"
+                ]
+            }
+        }
+    ]
+}

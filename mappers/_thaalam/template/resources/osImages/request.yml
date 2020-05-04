@@ -1,0 +1,11 @@
+thaalamType: OperatingSystemImage
+getAll:
+  method: GET
+  path: /images?type=system
+getByReference:
+  method: GET
+  path: /images/{reference}
+
+
+
+

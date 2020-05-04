@@ -1,0 +1,111 @@
+{
+  "author": "BlackBox Vision",
+  "contributors": [
+    "Jonatan E. Salas <jonatansalas@live.com.ar>",
+    "Lauri Larjo <laurilarjo@gmail.com>"
+  ],
+  "description": "Starter for building APIs with Hapi + Typescript!",
+  "license": "MIT",
+  "name": "typescript-hapi-starter",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=10.0"
+  },
+  "scripts": {
+    "dev": "npm run nodemon:build",
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "docker:logs": "docker-compose logs",
+    "docker:ps": "docker-compose ps",
+    "docker:start": "docker-compose up",
+    "docker:stop": "docker-compose -f docker-compose.yml down -v --remove-orphans",
+    "nodemon:build": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
+    "format:lint": "./node_modules/.bin/tslint -c tslint.json 'src/**/*.ts'",
+    "format:prettier": "./node_modules/.bin/prettier --tab-width 4 --print-width 120 --single-quote --trailing-comma all --write 'src/**/*.ts'",
+    "postinstall": "npm run build",
+    "test": "NODE_ENV=test nyc --reporter=lcov -r tsconfig-paths/register -r ts-node/register tape test/**/*.spec.{ts,js} | tap-spec",
+    "tap": "tap",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,ts,tsx}": [
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@hapi/boom": "^7.4.2",
+    "@hapi/hapi": "^18.3.1",
+    "@hapi/inert": "^5.2.1",
+    "@hapi/joi": "^15.1.0",
+    "@hapi/vision": "^5.5.2",
+    "@types/fs-extra": "^8.1.0",
+    "@types/js-yaml": "^3.12.3",
+    "@types/lodash": "^4.14.150",
+    "directory-tree": "^2.2.4",
+    "dotenv": "^8.0.0",
+    "fs-extra": "^9.0.0",
+    "hapi-swagger": "^10.0.2",
+    "hapijs-status-monitor": "github:ziyasal/hapijs-status-monitor",
+    "inert": "^5.1.3",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.15",
+    "nedb": "^1.8.0",
+    "path": "^0.12.7",
+    "snyk": "^1.189.0",
+    "vision": "^5.4.4",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@types/code": "^4.0.5",
+    "@types/dotenv": "^6.1.1",
+    "@types/hapi": "^18.0.2",
+    "@types/hapi__boom": "^7.4.0",
+    "@types/hapi__hapi": "^18.2.5",
+    "@types/hapi__inert": "^5.2.0",
+    "@types/hapi__joi": "^15.0.3",
+    "@types/hapi__vision": "^5.5.0",
+    "@types/nedb": "^1.8.8",
+    "@types/node": "^12.6.8",
+    "@types/tape": "^4.2.33",
+    "husky": "^3.0.1",
+    "lint-staged": "^9.2.1",
+    "nodemon": "^1.11.0",
+    "nyc": "^14.1.1",
+    "prettier": "^1.18.2",
+    "tap": "^14.10.5",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.8.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.4.3",
+    "typescript": "^3.7.2"
+  },
+  "keywords": [
+    "api",
+    "nodejs",
+    "hapi",
+    "typescript",
+    "swagger"
+  ],
+  "snyk": true
+}
