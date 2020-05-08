@@ -1,23 +1,26 @@
-resources:
-  - regions
-  - virtualMachineTypes
-  - osImages
-  - virtualMachines
-  - sshKeys
+resources: 
+  - Location
+  - VirtualMachineType
+  - OperatingSystemImage
+  - VirtualMachine
+  - SSHKey
+  - Network
+  - FloatingIP
 
-resourcesMetadata:
-  - properties:
-    - regions:
-    - virtualMachineTypes:
-    - osImages:
-    - virtualMachines:
-      - name
-      - vmTypeIdentifier
-      - vmRegionIdentifier
-      - osImageIdentifier
-      - rootPassword
-    - sshKeys:
-
- 
-
- 
+resourcesMetadata: 
+  - properties: 
+      - Location:
+      - VirtualMachineType:
+      - OperatingSystemImage:
+      - VirtualMachine:
+        - name 
+        - vmTypeIdentifier 
+        - vmLocationIdentifier 
+        - osImageIdentifier 
+        - rootPassword
+      - SSHKey:
+        - publicKey
+      - Network:
+        - ipRange
+      - FloatingIP:
+        - ipLocationIdentifier
