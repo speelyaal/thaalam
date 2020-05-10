@@ -5,8 +5,8 @@ thaalam:
   mappersPath: /Users/ashok/SpeelYaal/Technology/Workspace/thaalam/mappers
   version: 1.0.23
   providers:
-    - hetzner
-    - linode
+    - Hetzner
+    - Linode
     #- digitalOcean
     #- upCloud
     #- aws
