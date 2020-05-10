@@ -1,0 +1,25 @@
+thaalamType: Network
+getAll:
+  method: GET
+  path: /networks
+getByReference:
+  method: GET
+  path: /networks/{reference}
+create:
+  method: POST
+  path: /networks
+  body:
+    name: name
+    ip_range: ipRange
+update:
+  method: PUT
+  path: /networks/{reference}
+delete:
+  method: DELETE
+  path: /networks/{reference}
+
+
+
+
+
+
