@@ -1,5 +1,6 @@
 package com.speelyaal.thaalam.datamodel
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.speelyaal.thaalam.config.ConfigLoader
 import com.speelyaal.thaalam.transformers.utils.DateUtil
@@ -16,6 +17,7 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaType
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 abstract class ThaalamResource  {
 
     private val LOG: Logger = LogManager.getLogger(this::class.java)
