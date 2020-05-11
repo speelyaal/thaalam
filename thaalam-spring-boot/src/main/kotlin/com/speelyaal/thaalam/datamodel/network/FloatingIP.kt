@@ -6,5 +6,5 @@ class FloatingIP: ThaalamResource() {
     var ip: String = ""
     var ipType: IPType = IPType.ipv4
     var ipLocationIdentifier: String = ""
-    var vmVenderReference: String = ""
+    var vmVendorReference: String = ""
 }

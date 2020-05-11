@@ -17,7 +17,7 @@ class VirtualMachine : ThaalamResource()  {
     var sshKeys: List<SSHKey> = ArrayList<SSHKey>()
     var ipv4: List<String> = ArrayList<String>()
     var ipv6: List<String> = ArrayList<String>()
-    var status: VirtualMachineStatus = VirtualMachineStatus.offline
+    var availability: VirtualMachineStatus = VirtualMachineStatus.offline
     var specification: VirtualMachineSpecification = VirtualMachineSpecification()
     //TODO Random password
     // Linode : Password must contain at least 2 of these 4 character classes: lowercase letters, uppercase letters, numbers, and punctuation

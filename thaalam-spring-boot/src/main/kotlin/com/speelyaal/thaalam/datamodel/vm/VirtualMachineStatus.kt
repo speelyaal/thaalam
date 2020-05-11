@@ -11,6 +11,7 @@ enum class VirtualMachineStatus {
     migrating,
     rebuilding,
     cloning,
-    restoring
+    restoring,
+    toBeCreated
 
 }
