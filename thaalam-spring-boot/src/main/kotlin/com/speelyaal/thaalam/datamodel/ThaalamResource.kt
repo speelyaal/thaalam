@@ -3,6 +3,7 @@ package com.speelyaal.thaalam.datamodel
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.speelyaal.thaalam.config.ConfigLoader
+import com.speelyaal.thaalam.datamodel.vm.VirtualMachineStatus
 import com.speelyaal.thaalam.transformers.utils.DateUtil
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -56,6 +57,7 @@ abstract class ThaalamResource  {
                 Integer::class -> value.toString().toDouble()
                 Float::class -> value.toString().toDouble()
                 Double::class -> value.toString().toDouble()
+                VirtualMachineStatus::class -> VirtualMachineStatus.valueOf(value.toString())
 
                 else ->value.toString();
 

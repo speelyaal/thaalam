@@ -16,4 +16,5 @@ mapping:
      vmTypeIdentifier: $.server_type.name
      vmLocationIdentifier: $.datacenter.location.name
      createdDateTime: $.created
+     availability: $.status
 
